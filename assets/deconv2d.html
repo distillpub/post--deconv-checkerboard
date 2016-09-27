@@ -1,0 +1,109 @@
+<figure id="deconv2d" class="w-page">
+</figure>
+
+<script>
+(function(){
+
+  var fig = d3.select("#deconv2d");
+
+
+
+  var X = 13, Y = 9;
+  var size = 3, stride = 2;
+
+  var svg = fig.append("svg");
+  svg.style({width: '1000px', height: '320px'});
+
+  var C = d3.scale.linear()
+      .domain([0, 4])
+      .range(["white", "black"]);
+
+  var proj = (p) => ({x: 20 + 68*(0.9*p.x + 0.3*p.y), y: 115 - 68*(p.z-0.25*p.y)});
+  var proj_line = d3.svg.line().x(d => proj(d).x).y(d => proj(d).y);
+  var draw_line = (path) => {
+    svg.append('path')
+      .attr('d', proj_line(path))
+      .style('fill', 'none')
+      .style('stroke', 'black')
+      .style('stroke-width', 1);
+  }
+
+  var counts = _.range(30).map(x => _.range(30).map(y => 0));
+  var rect_data = [];
+   _.range(X).forEach(x => _.range(Y).forEach(y => {
+     rect_data.push({x: x, y: y});
+   }));
+
+  var rects = svg.append('g').selectAll('path').data(rect_data);
+  rects.enter().append('path')
+    .style('fill', 'white')
+    .style('stroke', 'black')
+    .style('stroke-width', 1);
+  rects.attr('d', d => proj_line([{x: d.x+0, y: d.y+0, z: 0}, {x: d.x+0, y: d.y+1, z: 0}, {x: d.x+1, y: d.y+1, z: 0},
+                                    {x: d.x+1, y: d.y+0, z: 0}, {x: d.x+0, y: d.y+0, z: 0}]))
+
+  var floater_g = svg.append('g');
+
+  var step_n = 0;
+  var reset_pending = false;
+  function reset(){
+    step_n = 0;
+    counts = counts.map(l => l.map(n => 0));
+    rects.style('fill', d => C(counts[d.x][d.y]));
+    reset_pending = false;
+  }
+  function step(){
+    var nX = Math.ceil((X-size+1)/stride), nY = Math.ceil((Y-size+1)/stride);
+    console.log(nX, nY, step_n);
+    if (step_n == nX*nY) {
+      floater_g.style("opacity", 0);
+      if (!reset_pending) {
+        setTimeout(reset, 2000);
+        reset_pending = true;
+      }
+      return;
+    }
+    var x = stride*(step_n % nX), y = stride*Math.floor(step_n/nX);
+    step_n += 1;
+    _.range(size).forEach(dX => _.range(size).forEach(dY => {
+      counts[dX+x][dY+y] += 1;
+    }));
+    rects.style('fill', d => C(counts[d.x][d.y]));
+    var offset = (size-1)/2;
+    if (true){
+      var z_top = 2;
+      var paths = [];
+      paths.push([{x: x+0, y: y, z: 0}, {x: x+size, y: y, z: 0}, {x: x+size-offset, y: y+offset, z: z_top}, {x: x+offset, y: y+offset, z: z_top}, {x: x+0, y: y, z: 0}]);
+      for (s of [1,0]) {
+        paths.push([{x: x+s*size, y: y+0, z: 0}, {x: x+s*size, y: y+size, z: 0}, {x: x+offset+s, y: y+size-offset, z: z_top}, {x: x+offset+s, y: y+offset, z: z_top}, {x: x+s*size, y: y+0, z: 0}]);
+      }
+      for (s of [1]) {
+        paths.push([{x: x+0, y: y+s*size, z: 0}, {x: x+size, y: y+s*size, z: 0}, {x: x+size-offset, y: y+offset+s, z: z_top}, {x: x+offset, y: y+offset+s, z: z_top}, {x: x+0, y: y+s*size, z: 0}]);
+      }
+      var temp = floater_g.selectAll('path').data(paths);
+      console.log(temp);
+      temp.enter().append('path')
+        .style('fill', '#99E')
+        .style('stroke', 'black')
+        .style('stroke-width', 1)
+        .style("opacity", 0.7);
+      temp.attr('d', d => proj_line(d));
+      floater_g.style("opacity", 0.5);
+      floater_g
+        .selectAll('g').data([{}]).enter().append('g')
+        .selectAll('path').data([{}]).enter().append('path')
+          .style('fill', '#777')
+          .style('stroke', 'black')
+          .style('stroke-width', 1)
+          .style("opacity", 1);;
+      floater_g
+        .select('g').select('path')
+        .attr('d', d => proj_line([{x: x+offset, y: y+offset, z: z_top}, {x: x+offset+1, y: y+offset, z: z_top}, {x: x+offset+1, y: y+offset+1, z: z_top}, {x: x+offset, y: y+offset+1, z: z_top}, {x: x+offset, y: y+offset, z: z_top}]));
+    }
+
+    }
+
+    setInterval(() => step(), 500);
+
+})()
+</script>

@@ -1,0 +1,33 @@
+
+{
+  "main": "index.md",
+  "name": "better-upsample",
+  "typewriter": {
+    "title": "Better Upsampling",
+    "description": " ",
+    "url": "",
+    "github": "",
+    "firstPublished": "Thu Sep 08 2016 10:27:05 GMT-0700 (PDT)",
+    "lastPublished": "Thu Sep 08 2016 10:27:05 GMT-0700 (PDT)",
+    "authors": [
+      {
+        "firstName": "Augustus",
+        "lastName" : "Odena",
+        "email": "augustusodena@google.com",
+        "url": "",
+        "affiliation": "Google Brain",
+        "affiliation-url": "http://g.co/brain"
+      },
+      {
+        "firstName": "Chris",
+        "lastName": "Olah",
+        "personalURL": "http://colah.github.io",
+        "affiliation": "Google Brain",
+        "affiliationURL": "http://g.co/brain"
+      }
+    ]
+  },
+  "dependencies": {
+    "d3": "^4.2.2"
+  }
+}

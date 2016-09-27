@@ -1,0 +1,108 @@
+<figure id="deconv1d" class="w-page">
+</figure>
+
+<script>
+(function(){
+
+  function gen_pattern(stride, size, N, n){
+    var counts = _.range(N).map(n => 0);
+    for (var i = 0; i < n; i++){
+      var x = stride*i;
+      for (var d = 0; d < size; d++){
+        if (x+d < N) counts[x+d] += 1;
+      }
+    }
+    return counts;
+  }
+
+  var fig = d3.select("#deconv1d");
+  var svg = fig.append("svg");
+  svg.style({width: '100%', height: '160px'});
+
+
+  var C = d3.scale.linear()
+      .domain([0, 3])
+      .range(["white", "black"]);
+
+  var line = d3.svg.line().x(d => 50*d.x).y(d => 200 - 50*d.y);
+
+  var ns = _.range(30);
+
+  var top_g = svg.append('g').attr("class", "top");
+  var mid_g = svg.append('g').attr("class", "mid");
+  var bot1_g = svg.append('g').attr("class", "bot");
+  var bot2_g = svg.append('g').attr("class", "bot");
+
+  var tops = top_g.selectAll('path').data(ns);
+  tops.enter().append('path')
+    .attr("fill", "#AAA")
+    .style("opacity", 0)
+    .style('stroke', 'black')
+    .style('stroke-width', 1);
+  var mids = mid_g.selectAll('path').data(ns);
+  mids.enter().append('path')
+    .attr("fill", "#55A")
+    .style("opacity", 0);
+  var bots1 = bot1_g.selectAll('path').data(ns);
+  bots1.enter().append('path')
+      .style("opacity", 0);
+  var bots2 = bot2_g.selectAll('path').data(ns);
+  bots2.enter().append('path')
+    .attr("fill", "none")
+    .style('stroke', 'black')
+    .style('stroke-width', 1);
+
+
+  function update(stride, size){
+    var n_max = Math.floor((18-size+1)/stride);
+    var counts = gen_pattern(stride, size, 100, 50);
+    tops.transition().attr('d', n => {
+      var x = stride*n + (size-1)/2;
+      var y1 = 3, y2 = 3.2;
+      return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+1, y: y2}, {x: x+1, y: y1}, {x: x, y: y1}]);
+    }).style("opacity", n => (n > n_max)? 0 : 0.3);
+    mids.transition().attr('d', n => {
+      var offset = (size-1)/2
+      var x = stride*n + offset;
+      var y1 = 1.2, y2 = 3;
+      return line([{x: x-offset, y: y1}, {x: x, y: y2}, {x: x+1, y: y2}, {x: x+1+offset, y: y1}, {x: x-offset, y: y1}]);
+    }).style("opacity", n => (n > n_max)? 0 : 0.3);
+    bots1.transition().attr('d', n => {
+      var offset = (size-1)/2
+      var x = stride*n + offset;
+      var x1 = x-offset;
+      var x2 = x+1+offset;
+      var y1 = 1, y2 = 1.2;
+      return line([{x: x1, y: y1}, {x: x1, y: y2}, {x: x2, y: y2}, {x: x2, y: y1}, {x: x1, y: y1},]);
+    }).style("opacity", n => (n > n_max)? 0 : 0.3);
+    bots2.transition().attr('d', n => {
+      var x = n;
+      var y1 = 1, y2 = 1.2;
+      return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+1, y: y2}, {x: x+1, y: y1}, {x: x, y: y1},]);
+    }).style("opacity", n => (n > stride*n_max + (size - 1))? 0 : 1);
+  }
+
+  fig.append('br');
+  fig.append('span').html("<b>1-Dimensional Deconvolution</b>");
+  fig.append('span').style('margin-left', '260px');
+  var stride_range = fig.append('input').attr('type', 'range').attr('min', 1).attr('max', 8);
+  var stride_text = fig.append('span');
+  //fig.append('br');
+  fig.append('span').style('margin-left', '50px');
+  var size_range = fig.append('input').attr('type', 'range').attr('min', 1).attr('max', 8);
+  var size_text = fig.append('span');
+  stride_range.node().value = 2;
+  size_range.node().value = 3;
+
+  function ui_update(){
+    stride_text.text(" stride = " + stride_range.node().value);
+    size_text.text(" size = " + size_range.node().value);
+    update(stride_range.node().value, size_range.node().value);
+  }
+  ui_update();
+  stride_range.on("input", ui_update);
+  size_range.on("input", ui_update);
+
+
+})()
+</script>
