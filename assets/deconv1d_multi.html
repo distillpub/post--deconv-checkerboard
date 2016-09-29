@@ -1,0 +1,248 @@
+<figure id="deconv1d_multi" class="w-page">
+</figure>
+
+<script>
+(function(){
+
+  function gen_pattern(stride, size, N, n){
+    var counts = _.range(N).map(n => 0);
+    for (var i = 0; i < n; i++){
+      var x = stride*i;
+      for (var d = 0; d < size; d++){
+        if (x+d < N) counts[x+d] += 1;
+      }
+    }
+    return counts;
+  }
+
+  function cartesian_product(ls){
+    if (ls.length == 0) return [[]];
+    if (ls.length == 1) return ls[0].map(x => [x]);
+    var other_prod = cartesian_product(ls.slice(1));
+    var ret = [];
+    for (var x of ls[0])
+    for (var y of other_prod){
+      ret.push([x].concat(y));
+    }
+    return ret;
+  }
+
+  var fig = d3.select("#deconv1d_multi");
+  var svg = fig.append("svg");
+  svg.style({width: '100%', height: '300px'});
+
+
+  var C = d3.scale.linear()
+      .domain([0, 3])
+      .range(["white", "black"]);
+
+  var X = t => 30*t;
+  var Y = t => 20*t;
+  var line = d3.svg.line().x(d => X(d.x)).y(d => Y(d.y));
+
+  var ns = _.range(10);
+  var spread = _.range(5);
+
+  function tree_to_ind(t){
+    var n = 0;
+    for (var i in t){
+      n = t[i] + strides[i]*n;
+    }
+    return n;
+  }
+
+var max_sizes = [6, 5, 5, 5];
+var max_L = 3;
+
+  function draw_vis(sizes, strides){
+
+    function tree_to_ind(t){
+      var n = 0;
+      for (var i in t){
+        n = t[i] + strides[i]*n;
+      }
+      return n;
+    }
+
+    var top_max_widths = _.range(max_sizes[0]).map(s0 => tree_to_ind(([s0]).concat(sizes.slice(1).map(s => s-1))) );
+
+    sizes = sizes.slice(0);
+    sizes[0] = Math.min(sizes[0], top_max_widths.filter(s => s < 30).length);
+
+    var max_widths = _.range(max_L).map(l => tree_to_ind(sizes.map(s => s-1).slice(0,l+1)) );
+
+    var offsets = _.range(max_L).map(l => (max_widths[max_L-1] - max_widths[l])/2);
+    var x_spacing = {};
+    var x_spacing_spread = {};
+    for (var l = 0; l < max_L; l++){
+      x_spacing[l] = _.range(500).map(n => 0.1+offsets[l] + n);
+      if (l < max_L - 1)
+        x_spacing_spread[l] = _.range(500).map(n => 0.1+offsets[l+1] + (sizes[l+1]-1)/2+strides[l+1]*n);
+    }
+
+    function tree_to_indM(t){
+      var t2 = [t[0]].concat(t.slice(1).map((n,i) => Math.min(n, sizes[i+1]-1)));
+      return tree_to_ind(t2);
+    }
+
+    var visible = 1;
+    for (var l = 0; l < max_L; l++){
+      var data = cartesian_product(max_sizes.map(s => _.range(s)).slice(0,l+1));
+
+      visible *= sizes[l];
+      var LF = Math.min(0.9, 1.8*sizes[0]/visible);
+      var sizesL = sizes.slice(0,l+1), stridesL = strides.slice(0,l+1);
+
+      /*if (false){
+        var g = svg.selectAll("#l"+l).data([{}]);
+        g.enter().append("g").attr("id", "l"+l);
+
+        var boxes = g.selectAll("path").data(data);
+        boxes.enter().append("path")
+          .attr("id", t => "box"+t)
+          .attr("fill", "#000");
+        boxes.transition().attr('d', t => {
+          var x = x_spacing[l][tree_to_ind(t)];
+          var y1 = 6*l, y2 = 6*l + 0.5;
+          return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+1, y: y2}, {x: x+1, y: y1}]);
+        })
+        .style("opacity", t => { return _.all(_.zip(t,sizesL).map(([t,s])  => t < s))? 0.8*LF : 0});
+      }*/
+
+      // spread boxes (+links)
+      var g = svg.selectAll("#l_stride"+l).data([{}]);
+      g.enter().append("g").attr("id", "l_stride"+l);
+      var boxes = g.selectAll("path").data(data);
+      boxes.enter().append("path")
+        .attr("id", t => "box"+t)
+        .attr("fill", "#000")
+        .style('stroke', 'white')
+        .style('stroke-width', 1)
+        .style("opacity", t => { return _.all(_.zip(t,sizesL).map(([t,s])  => t < s))? 0.8*LF : 0});
+      boxes.transition()
+        .style("opacity", t => { return _.all(_.zip(t,sizesL).map(([t,s])  => t < s))? 0.8*LF : 0})
+        .attr('d', t => {
+          if (l == max_L-1){
+            var x = x_spacing[l][tree_to_indM(t)];
+            var y1 = 6*l, y2 = 6*l + 0.5;
+            return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+1, y: y2}, {x: x+1, y: y1}]);
+          }
+          var x1 = x_spacing[l][tree_to_indM(t)];
+          var x2 = x_spacing_spread[l][tree_to_indM(t)];
+          var y0 = 6*l, y1 = 6*l+0.5, y2 = 6*l+4, y3 = 6*l+4 + 0.5;
+          if (l==-1){
+            return line([{x: x2, y: y2}, {x: x2, y: y3}, {x: x2+1, y: y3}, {x: x2+1, y: y2}, {x: x2, y: y2}]);
+          }
+          var D = 30;
+          var p = d3.path();
+          p.moveTo(X(x1), Y(y0));
+          p.lineTo(X(x1), Y(y1));
+          p.bezierCurveTo(X(x1), Y(y1)+D, X(x2), Y(y2)-D, X(x2), Y(y2));
+          p.lineTo(X(x2), Y(y2));
+          p.lineTo(X(x2), Y(y3));
+          p.lineTo(X(x2+1), Y(y3));
+          p.lineTo(X(x2+1), Y(y2));
+          p.bezierCurveTo(X(x2+1), Y(y2)-D, X(x1+1), Y(y1)+D, X(x1+1), Y(y1));
+          p.lineTo(X(x1+1), Y(y0));
+          //p.lineTo(X(x1+1), Y(y1));
+          return p.toString();
+          //line([{x: x2, y: y2}, {x: x2, y: y3}, {x: x2+1, y: y3}, {x: x2+1, y: y2}, {x: x1+1, y: y1}, {x: x1, y: y1}, {x: x2, y: y2}]);
+        });
+
+      //outline boxes
+       var g = svg.selectAll("#outline"+l).data([{}]);
+       g.enter().append("g").attr("id", "outline"+l);
+       var boxes = g.selectAll("path").data(_.range(100));
+       boxes.enter().append("path")
+         .attr("id", t => "box"+t)
+         .attr("fill", "none")
+         .style('stroke', 'black')
+         .style('stroke-width', 1)
+         .style('opacity', i => { return (i <= max_widths[l])? 1 : 0});
+       boxes.transition()
+         .style("opacity", i => { return (i <= max_widths[l])? 1 : 0})
+         .attr('d', i => {
+           var x = x_spacing[l][Math.min(max_widths[l], i)];
+           var y1 = 6*l, y2 = 6*l + 0.5;
+           return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+1, y: y2}, {x: x+1, y: y1}, {x: x, y: y1}]);
+         });
+
+       /*//outline boxes
+        var g = svg.selectAll("#outline_spread"+l).data([{}]);
+        g.enter().append("g").attr("id", "outline_spread"+l);
+        var boxes = g.selectAll("path").data(_.range(100));
+        boxes.enter().append("path")
+          .attr("id", t => "box"+t)
+          .attr("fill", "none")
+          .style('stroke', 'black')
+          .style('stroke-width', 1);
+        boxes.transition().attr('d', i => {
+          var x = x_spacing[l][i] + (sizes[l]-1)/2;
+          var y1 = 6*(l-1)+4, y2 = 6*(l-1)+4 + 0.5;
+          return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+1, y: y2}, {x: x+1, y: y1}, {x: x, y: y1}]);
+        })
+        .style("opacity", i => { return (i <= max_widths[l]-sizes[l]+1)? 1 : 0});
+        */
+
+      if (l < max_L-1){
+
+        // conv windows (+links)
+        var g = svg.selectAll("#l_conv"+l).data([{}]);
+        g.enter().append("g").attr("id", "l_conv"+l);
+        var boxes = g.selectAll("path").data(data);
+        boxes.enter().append("path")
+          .attr("id", t => "box"+t)
+          .attr("fill", "#008")
+          .style("opacity", t => { return _.all(_.zip(t,sizesL).map(([t,s])  => t < s))? 0.9*LF/sizes[l+1] : 0});
+        boxes.transition().attr('d', t => {
+          var x1 = x_spacing_spread[l][tree_to_indM(t)];
+          var x2 = x_spacing[l+1][tree_to_indM(t.concat([0]))];
+          var y1 = 6*l+4 + 0.5, y2 = 6*(l+1);
+          return line([{x: x1, y: y1}, {x: x1+1, y: y1}, {x: x2+sizes[l+1], y: y2}, {x: x2, y: y2}, {x: x1, y: y1},]);
+        })
+        .style("opacity", t => { return _.all(_.zip(t,sizesL).map(([t,s])  => t < s))? 0.9*LF/sizes[l+1] : 0});
+
+      }
+    }
+  }
+  var stride_ranges = [];
+  var size_ranges = [];
+  var stride_spans = [];
+  var size_spans = [];
+
+  for (var l = 0; l < max_L; l++){
+    fig.append('br');
+    var div = fig.append("div");
+    if (l==0) div.style("display", "none")
+    stride_ranges.push(div.append('input').attr('type', 'range').attr('min', 1).attr('max', max_sizes[l]));
+    stride_spans.push(div.append('span'));
+    fig.append('span').style('margin-left', '50px');
+    size_ranges.push(div.append('input').attr('type', 'range').attr('min', 1).attr('max', max_sizes[l]));
+    size_spans.push(div.append('span'));
+  }
+
+  function update_vis(){
+    var strides = [], sizes = [];
+    for (var l = 0; l < max_L; l++){
+      var stride = parseInt(stride_ranges[l].node().value);
+      var size = parseInt(size_ranges[l].node().value);
+      strides.push(stride);
+      sizes.push(size);
+      stride_spans[l].text("stride = " + stride);
+      size_spans[l].text("size = " + size);
+    }
+    draw_vis(sizes, strides);
+  }
+
+  var strides = [0,2,2,1];
+  var sizes = [4,3,3,3];
+  for (var l = 0; l < max_L; l++){
+    stride_ranges[l].node().value = strides[l];
+    stride_ranges[l].on("change", update_vis);
+    size_ranges[l].node().value = sizes[l];
+    size_ranges[l].on("change", update_vis);
+  }
+  update_vis();
+
+})()
+</script>

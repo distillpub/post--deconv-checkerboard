@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="assets/common.css">
 <script src="assets/d3.min.js"></script>
+<script src="assets/d3-path.min.js"></script>
 <script src="assets/underscore.js"></script>
 <h1>{{ typewriter.title }}</h1>
 {{> byline.html}}
@@ -47,6 +48,17 @@ In particular, deconvolution has these uneven overlap issues when the kernel siz
 The problem only gets worse in two dimensions. The uneven overlaps on the two axes multiply together, creating a checkerboard-like pattern of varying magnitudes.
 
 {{> assets/deconv2d.html}}
+
+When we stack multiple deconvolutions, the artifacts may cancel out, or they may become more complicated, higher level patterns.
+
+{{> assets/deconv1d_multi.html}}
+
+Balanced Upsampling
+====================
+
+To avoid these artifacts,
+
+{{> assets/upsample_DeconvTypes.svg}}
 
 
 
