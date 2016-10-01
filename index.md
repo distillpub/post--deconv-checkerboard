@@ -37,11 +37,15 @@ from low resolution, high-level descriptions.
 This allows the network to describe the rough image and then fill in the details.
 
 In order to do this, we need some way to go from a lower resolution image to a higher one.
-We generally do this with the *deconvolution* operation.
-Roughly, deconvolution allows the model to... **TODO**
+We generally do this with the *deconvolution* (or transposed convolution) operation.
+Roughly, deconvolution layers allows the model to use every point
+in the small image to "paint" a square in the larger one.
+(For a detailed disucssion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf).)
 
 Unfortunately, deconvolution can lead to uneven overlap.
 This creates magnitude problems in the output, with some outputs being much bigger than their neighbors.
+
+TODO: Offset logic min /2
 
 {{> assets/deconv1d.html}}
 

@@ -22,12 +22,10 @@
   // SVG
   var fig = d3.select("#deconv1d");
   var svg = fig.append("svg");
-  svg.style({width: '100%', height: '100px'});
+  svg.style({width: '100%', "max-height": '130px'});
   svg.attr("version", "1.1")
-  svg.attr("viewBox", "0 3.8 32 3")
+  svg.attr("viewBox", "0 3.8 32 4")
   svg.attr("preserveAspectRatio", "xMidYMid meet")
-  svg.style("width", "100%")
-  svg.style("max-height", "800px")
 
 
   //==============================================================================
@@ -110,13 +108,13 @@
           var dX = d.collapsed? 0 : 1;
           if (l == max_L-1){
             var x = x_spacing[l][tree_to_ind(d.t2)+ (d.collapsed? 1 : 0)];
-            var y1 = 6*l, y2 = 6*l + 0.5;
+            var y1 = 7*l, y2 = 7*l + 0.5;
             return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+dX, y: y2}, {x: x+dX, y: y1}]);
           }
           var x1 = x_spacing[l][tree_to_ind(d.t2)+ (d.collapsed? 1 : 0)];
           var x2 = x_spacing_spread[l][tree_to_ind(d.t2)] + (d.collapsed? 1 : 0);
 
-          var y0 = 6*l, y1 = 6*l+0.5, y2 = 6*l+4, y3 = 6*l+4 + 0.5;
+          var y0 = 7*l, y1 = 7*l+0.5, y2 = 7*l+4, y3 = 7*l+4 + 0.5;
           if (l==0){
             return line([{x: x2, y: y2}, {x: x2, y: y3}, {x: x2+dX, y: y3}, {x: x2+dX, y: y2}, {x: x2, y: y2}]);
           }
@@ -151,7 +149,7 @@
               var dX = collapsed? 0 : 1;
               var n2 = Math.min(n, width)
               var x = x_spacing[l][n2+ (collapsed? 1 : 0)];
-              var y1 = 6*l, y2 = 6*l + 0.5;
+              var y1 = 7*l, y2 = 7*l + 0.5;
               return line([{x: x, y: y1}, {x: x, y: y2}, {x: x+dX, y: y2}, {x: x+dX, y: y1}, {x: x, y: y1}]);
             } else {
               var width = max_widths[l+1] - sizes[l+1] + 1;
@@ -160,7 +158,7 @@
               var dX = collapsed? 0 : 1;
               var n2 = Math.min(n, width);
               var x = x_spacing[l+1][n2+ (collapsed? 1 : 0)] + (sizes[l+1]-1)/2.0;
-              var y2 = 6*l+4, y3 = 6*l+4 + 0.5;
+              var y2 = 7*l+4, y3 = 7*l+4 + 0.5;
               //if (l==0) console.log(x, sizes[l+1], x_spacing[l+1], n2+ (sizes[l+1]-1)/2.0+ (collapsed? 1 : 0));
               return line([{x: x, y: y2}, {x: x, y: y3}, {x: x+dX, y: y3}, {x: x+dX, y: y2}, {x: x, y: y2}]);
             }
@@ -180,7 +178,7 @@
             var n = tree_to_ind(d.t2);
             var x1 = x_spacing_spread[l][tree_to_ind(d.t2)];
             var x2 = x_spacing[l+1][tree_to_ind(d.t2.concat([0]))];
-            var y1 = 6*l+4 + 0.5, y2 = 6*(l+1);
+            var y1 = 7*l+4 + 0.5, y2 = 7*(l+1);
             if (d.collapsed){
               return line([{x: x1+1, y: y1}, {x: x1+1, y: y1}, {x: x2+sizes[l+1], y: y2}, {x: x2+sizes[l+1], y: y2}, {x: x1+1, y: y1},]);
             } else {
@@ -200,15 +198,15 @@
     .style("top", "0px")
     .style("right", "0px")
     .style("width", "calc((100% - 648px)/2)")
-    .style("height", "100px")
+    .style("height", "100%")
     .style("background", "linear-gradient(to right, rgba(255,255,255,0), #fcfcfc, #fcfcfc, #fcfcfc, #fcfcfc)")
 
     fig.append("div")
       .style("position", "absolute")
       .style("top", "0px")
       .style("left", "0px")
-      .style("width", "calc((100% - 648px)/3)")
-      .style("height", "100px")
+      .style("width", "calc((100% - 648px)/4)")
+      .style("height", "100%")
       .style("background", "linear-gradient(to left, rgba(255,255,255,0), #fcfcfc)")
 
   var stride_ranges = [];
@@ -224,13 +222,13 @@
 
     stride_spans.push(div.append('span')
       .style("position", "absolute")
-      .style("top", (15 + 200*(l-1))  + "px")
+      .style("top", (30 + 200*(l-1))  + "px")
       .style("right", "200px")
       .style("right", "calc((100% - 648px)/2 - 200px)")
     );
     size_spans.push(div.append('span')
       .style("position", "absolute")
-      .style("top", (65 + 200*(l-1))  + "px")
+      .style("top", (80 + 200*(l-1))  + "px")
       .style("right", "200px")
       .style("right", "calc((100% - 648px)/2 - 200px)")
     );
@@ -238,14 +236,14 @@
     stride_ranges.push(div.append('input').attr('type', 'range')
       .attr('min', 1).attr('max', max_sizes[l])
       .style("position", "absolute")
-      .style("top", (5 + 200*(l-1)) + "px")
+      .style("top", (20 + 200*(l-1)) + "px")
       .style("right", "200px")
       .style("right", "calc((100% - 648px)/2 - 200px)")
     );
     size_ranges.push(div.append('input')
       .attr('type', 'range').attr('min', 1).attr('max', max_sizes[l])
       .style("position", "absolute")
-      .style("top", (55 + 200*(l-1))  + "px")
+      .style("top", (70 + 200*(l-1))  + "px")
       .style("right", "200px")
       .style("right", "calc((100% - 648px)/2 - 200px)")
     );

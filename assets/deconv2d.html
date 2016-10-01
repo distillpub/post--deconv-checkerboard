@@ -12,13 +12,17 @@
   var size = 3, stride = 2;
 
   var svg = fig.append("svg");
-  svg.style({width: '1000px', height: '320px'});
+  //svg.style({width: '1000px', height: '350px'});
+  svg.style({width: '100%', "max-height": '400px'});
+  svg.attr("version", "1.1")
+  svg.attr("viewBox", "0 0 1000 350")
+  svg.attr("preserveAspectRatio", "xMidYMid meet")
 
   var C = d3.scale.linear()
       .domain([0, 4])
       .range(["white", "black"]);
 
-  var proj = (p) => ({x: 20 + 68*(0.9*p.x + 0.3*p.y), y: 115 - 68*(p.z-0.25*p.y)});
+  var proj = (p) => ({x: 20 + 68*(0.9*p.x + 0.3*p.y), y: 125 - 68*(p.z-0.25*p.y)});
   var proj_line = d3.svg.line().x(d => proj(d).x).y(d => proj(d).y);
   var draw_line = (path) => {
     svg.append('path')
@@ -54,6 +58,7 @@
   }
   function step(){
     var nX = Math.ceil((X-size+1)/stride), nY = Math.ceil((Y-size+1)/stride);
+    console.log(nX, nY, step_n);
     if (step_n == nX*nY) {
       floater_g.style("opacity", 0);
       if (!reset_pending) {
@@ -80,6 +85,7 @@
         paths.push([{x: x+0, y: y+s*size, z: 0}, {x: x+size, y: y+s*size, z: 0}, {x: x+size-offset, y: y+offset+s, z: z_top}, {x: x+offset, y: y+offset+s, z: z_top}, {x: x+0, y: y+s*size, z: 0}]);
       }
       var temp = floater_g.selectAll('path').data(paths);
+      console.log(temp);
       temp.enter().append('path')
         .style('fill', '#99E')
         .style('stroke', 'black')
