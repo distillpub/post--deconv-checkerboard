@@ -27,8 +27,8 @@ What's going on? Do neural networks hate bright colors?
 
 ---
 
-Deconvolution & Magnitude
-==========================
+Deconvolution & Uneven Overlap
+==============================
 
 The actual cause of these artifacts is remarkably simple, once you see it.
 
@@ -42,16 +42,28 @@ Roughly, deconvolution layers allows the model to use every point
 in the small image to "paint" a square in the larger one.
 (For a detailed disucssion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf).)
 
-Unfortunately, deconvolution can lead to uneven overlap.
-This creates magnitude problems in the output, with some outputs being much bigger than their neighbors.
+Unfortunately, deconvolution can easily have uneven overlap,
+putting more of the metaphorical paint in some places than others.
+While the neural network could, in principle, carefully learn weights to avoid this
+-- as we'll discuss in more detail later --
+in practice they struggle to avoid it completely.
 
 {{> assets/deconv1d.html}}
 
 In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
 
-The problem only gets worse in two dimensions. The uneven overlaps on the two axes multiply together, creating a checkerboard-like pattern of varying magnitudes.
+The overlap pattern also forms in two dimensions.
+The uneven overlaps on the two axes multiply together,
+creating a characteristic checkerboard-like pattern of varying magnitudes.
+This also makes the overlap more uneven:
+in one dimension, a stride 2, size 3 deconvolution has some outputs with twice the number of inputs as others,
+but in two dimensions this becomes a factor of four!
 
 {{> assets/deconv2d.html}}
+
+Typically, neural nets use multiple layers of deconvolution when creating images,
+iteratively building a larger image out of a series of lower resolution descriptions.
+While it's possible for these 
 
 When we stack multiple deconvolutions, the artifacts may cancel out, or they may become more complicated, higher level patterns.
 

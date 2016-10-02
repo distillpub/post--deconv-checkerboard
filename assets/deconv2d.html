@@ -46,7 +46,7 @@
   rects.attr('d', d => proj_line([{x: d.x+0, y: d.y+0, z: 0}, {x: d.x+0, y: d.y+1, z: 0}, {x: d.x+1, y: d.y+1, z: 0},
                                     {x: d.x+1, y: d.y+0, z: 0}, {x: d.x+0, y: d.y+0, z: 0}]))
 
-  var floater_g = svg.append('g');
+  var floater_g = svg.append('g').style("opacity", 0);;
 
   var step_n = 0;
   var reset_pending = false;
@@ -68,46 +68,49 @@
       return;
     }
     var x = stride*(step_n % nX), y = stride*Math.floor(step_n/nX);
+    x = ((y/stride) % 2 == 0)? x : stride*(nX-1) - x;
     step_n += 1;
     _.range(size).forEach(dX => _.range(size).forEach(dY => {
       counts[dX+x][dY+y] += 1;
     }));
-    rects.style('fill', d => C(counts[d.x][d.y]));
+
+    rects.transition().delay(200).duration(100).style('fill', d => C(counts[d.x][d.y]));
     var offset = (size-1)/2;
-    if (true){
-      var z_top = 2;
-      var paths = [];
-      paths.push([{x: x+0, y: y, z: 0}, {x: x+size, y: y, z: 0}, {x: x+size-offset, y: y+offset, z: z_top}, {x: x+offset, y: y+offset, z: z_top}, {x: x+0, y: y, z: 0}]);
-      for (s of [1,0]) {
-        paths.push([{x: x+s*size, y: y+0, z: 0}, {x: x+s*size, y: y+size, z: 0}, {x: x+offset+s, y: y+size-offset, z: z_top}, {x: x+offset+s, y: y+offset, z: z_top}, {x: x+s*size, y: y+0, z: 0}]);
-      }
-      for (s of [1]) {
-        paths.push([{x: x+0, y: y+s*size, z: 0}, {x: x+size, y: y+s*size, z: 0}, {x: x+size-offset, y: y+offset+s, z: z_top}, {x: x+offset, y: y+offset+s, z: z_top}, {x: x+0, y: y+s*size, z: 0}]);
-      }
-      var temp = floater_g.selectAll('path').data(paths);
-      //console.log(temp);
-      temp.enter().append('path')
-        .style('fill', '#99E')
+
+    var z_top = 2;
+    var paths = [];
+    paths.push([{x: x+0, y: y, z: 0}, {x: x+size, y: y, z: 0}, {x: x+size-offset, y: y+offset, z: z_top}, {x: x+offset, y: y+offset, z: z_top}, {x: x+0, y: y, z: 0}]);
+    for (s of [1,0]) {
+      paths.push([{x: x+s*size, y: y+0, z: 0}, {x: x+s*size, y: y+size, z: 0}, {x: x+offset+s, y: y+size-offset, z: z_top}, {x: x+offset+s, y: y+offset, z: z_top}, {x: x+s*size, y: y+0, z: 0}]);
+    }
+    for (s of [1]) {
+      paths.push([{x: x+0, y: y+s*size, z: 0}, {x: x+size, y: y+s*size, z: 0}, {x: x+size-offset, y: y+offset+s, z: z_top}, {x: x+offset, y: y+offset+s, z: z_top}, {x: x+0, y: y+s*size, z: 0}]);
+    }
+    var temp = floater_g.selectAll('path').data(paths);
+    //console.log(temp);
+    temp.enter().append('path')
+      .style('fill', '#99E')
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
+      .style("opacity", 0.7);
+    temp.transition().duration(200).attr('d', d => proj_line(d));
+    floater_g.transition().delay(200).duration(0).style("opacity", 0.5);
+    floater_g
+      .selectAll('g').data([{}]).enter().append('g')
+      .selectAll('path').data([{}]).enter().append('path')
+        .style('fill', '#777')
         .style('stroke', 'black')
         .style('stroke-width', 1)
-        .style("opacity", 0.7);
-      temp.attr('d', d => proj_line(d));
-      floater_g.style("opacity", 0.5);
-      floater_g
-        .selectAll('g').data([{}]).enter().append('g')
-        .selectAll('path').data([{}]).enter().append('path')
-          .style('fill', '#777')
-          .style('stroke', 'black')
-          .style('stroke-width', 1)
-          .style("opacity", 1);;
-      floater_g
-        .select('g').select('path')
-        .attr('d', d => proj_line([{x: x+offset, y: y+offset, z: z_top}, {x: x+offset+1, y: y+offset, z: z_top}, {x: x+offset+1, y: y+offset+1, z: z_top}, {x: x+offset, y: y+offset+1, z: z_top}, {x: x+offset, y: y+offset, z: z_top}]));
-    }
+        .style("opacity", 1);
+    floater_g
+      .select('g').select('path')
+      .transition().duration(200)
+      .attr('d', d => proj_line([{x: x+offset, y: y+offset, z: z_top}, {x: x+offset+1, y: y+offset, z: z_top}, {x: x+offset+1, y: y+offset+1, z: z_top}, {x: x+offset, y: y+offset+1, z: z_top}, {x: x+offset, y: y+offset, z: z_top}]));
+
 
     }
 
-    setInterval(() => step(), 500);
+    setInterval(() => step(), 700);
 
 })()
 </script>
