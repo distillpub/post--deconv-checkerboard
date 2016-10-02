@@ -628,3 +628,46 @@ pre code {
   font-size: 12px;
   line-height: 20px;
 }
+
+
+
+@media (min-width: 984px) {
+  .post > .w-page-clip, .post > .w-page-clip-left  {
+    width: 984px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 648px) and (max-width: 984px) {
+  .post > .w-page-clip {
+    width: 984px;
+    margin-left: calc((100% - 984px) / 2);
+    clip-path: inset(0px 168px 0px 168px);
+    -webkit-clip-path: inset(0px 168px 0px 168px);
+  }
+}
+@media (min-width: 816px) and (max-width: 984px) {
+  .post > .w-page-clip-left {
+    width: 984px;
+    margin-left: calc(100% - 984px);
+    /*calc((100% - 816px)/2 - 168px + 20px)*/
+    clip-path: inset(0px 0px 0px 168px);
+    -webkit-clip-path: inset(0px 0px 0px 168px);
+  }
+}
+
+@media (max-width: 648px) {
+  .post > .w-page-clip {
+    width: calc( (984 / 648) * (100% - 40px) );
+    margin-left: calc((100% - (984 / 648) * (100% - 40px) ) / 2);
+    -webkit-clip-path: inset(0px calc( 16% ) 0px calc( 16% ) );
+  }
+}
+@media (max-width: 816px) {
+  .post > .w-page-clip-left {
+    width: calc( (984 / 816) * (100% - 40px) );
+    margin-left: calc((100% - (984 / 816) * (100% - 40px) ));
+    -webkit-clip-path: inset(0px 0px 0px calc( 16% ) );
+  }
+}

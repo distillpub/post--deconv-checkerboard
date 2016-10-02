@@ -21,6 +21,7 @@
 
   // SVG
   var fig = d3.select("#deconv1d_multi");
+  var is_wide = fig.node().getBoundingClientRect().width > 600;
   var svg = fig.append("svg");
   svg.style({width: '100%', "max-height": '360px'});
   svg.attr("version", "1.1")
@@ -74,7 +75,11 @@
     var max_widths = _.range(max_L).map(l => tree_to_ind(sizes.map(s => s-1).slice(0,l+1)) );
 
     var base_delta = 26 - max_widths[max_L-1];
-    var base_offset = 2+Math.min(base_delta/2, base_delta);
+    if (is_wide) {
+      var base_offset = 2+Math.min(base_delta/2, base_delta);
+    } else {
+      var base_offset = base_delta/2;
+    }
     var offsets = _.range(max_L).map(l => base_offset + (max_widths[max_L-1] - max_widths[l])/2);
     var x_spacing = {};
     var x_spacing_spread = {};
@@ -201,28 +206,85 @@
   }
 
 
-  fig.append("div")
-    .style("position", "absolute")
-    .style("top", "0px")
-    .style("right", "0px")
-    .style("width", "calc((100% - 648px)/2)")
-    .style("height", "100%")
-    .style("background", "linear-gradient(to right, rgba(255,255,255,0), #fcfcfc, #fcfcfc, #fcfcfc, #fcfcfc)")
-
+  if (is_wide) {
     fig.append("div")
       .style("position", "absolute")
       .style("top", "0px")
-      .style("left", "0px")
-      .style("width", "calc((100% - 648px)/4)")
+      .style("right", "0px")
+      .style("width", "calc((100% - 648px)/2)")
       .style("height", "100%")
-      .style("background", "linear-gradient(to left, rgba(255,255,255,0), #fcfcfc)")
+      .style("background", "linear-gradient(to right, rgba(255,255,255,0), #fcfcfc, #fcfcfc, #fcfcfc, #fcfcfc)");
+
+      fig.append("div")
+        .style("position", "absolute")
+        .style("top", "0px")
+        .style("left", "0px")
+        .style("width", "calc((100% - 648px)/4)")
+        .style("height", "100%")
+        .style("background", "linear-gradient(to left, rgba(255,255,255,0), #fcfcfc)");
+    }
 
   var stride_ranges = [];
   var size_ranges = [];
   var stride_spans = [];
   var size_spans = [];
 
-  //fig.append('br');
+
+
+    //fig.append('br');
+    for (var l = 0; l < max_L; l++){
+
+      if (is_wide){
+        var div = fig.append("div");
+        if (l==0) div.style("display", "none")
+        stride_spans.push(div.append('span')
+          .style("position", "absolute")
+          .style("top", (30 + 240*(l-1))  + "px")
+          .style("right", "200px")
+          .style("right", "calc((100% - 648px)/2 - 200px)")
+        );
+        size_spans.push(div.append('span')
+          .style("position", "absolute")
+          .style("top", (80 + 240*(l-1))  + "px")
+          .style("right", "200px")
+          .style("right", "calc((100% - 648px)/2 - 200px)")
+        );
+
+        stride_ranges.push(div.append('input').attr('type', 'range')
+          .attr('min', 1).attr('max', max_sizes[l])
+          .style("position", "absolute")
+          .style("top", (20 + 240*(l-1)) + "px")
+          .style("right", "200px")
+          .style("right", "calc((100% - 648px)/2 - 200px)")
+        );
+        size_ranges.push(div.append('input')
+          .attr('type', 'range').attr('min', 1).attr('max', max_sizes[l])
+          .style("position", "absolute")
+          .style("top", (70 + 240*(l-1))  + "px")
+          .style("right", "200px")
+          .style("right", "calc((100% - 648px)/2 - 200px)")
+        );
+      } else {
+        var div = fig.append("div").style({float: "left", "margin": 0, "margin-right" : "20px"});
+        if (l==0) div.style("display", "none")
+        stride_ranges.push(div.append('input').attr('type', 'range')
+          .attr('min', 1).attr('max', max_sizes[l])
+        );
+        div.append("br");
+        stride_spans.push(div.append('span'));
+        div.append("br");
+        size_ranges.push(div.append('input')
+          .attr('type', 'range').attr('min', 1).attr('max', max_sizes[l])
+        );
+        div.append("br");
+        size_spans.push(div.append('span'));
+      }
+    }
+    if (!is_wide) {
+      fig.append("br").style("clear", "left")
+    }
+
+  /*//fig.append('br');
   for (var l = 0; l < max_L; l++){
     var div = fig.append("div");
     //var div = fig;
@@ -255,7 +317,7 @@
       .style("right", "200px")
       .style("right", "calc((100% - 648px)/2 - 200px)")
     );
-  }
+  }*/
 
   function update_vis(){
     var strides = [], sizes = [];

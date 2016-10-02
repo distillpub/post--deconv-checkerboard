@@ -9,7 +9,7 @@ In the last year, we've seen incredible progress in generating images with neura
 Using techniques like Generative Adversarial Networks and Variational Auto-Encoders,
 researchers are able to create extremely compelling image samples. **TODO:** Some of the below aren't samples.
 
-<figure class="w-page">
+<figure class="w-page-clip">
 <img src="assets/upsample_RecentSamples.png">
 </figure>
 
@@ -18,7 +18,7 @@ we often see this strange checkerboard pattern of artifacts.
 It's more obvious in some cases than others,
 but a large fraction of recent models exhibit this behavior.
 
-<figure class="w-page">
+<figure class="w-page-clip">
 <img src="assets/upsample_RecentArtifacts.png">
 </figure>
 
@@ -45,8 +45,6 @@ in the small image to "paint" a square in the larger one.
 Unfortunately, deconvolution can lead to uneven overlap.
 This creates magnitude problems in the output, with some outputs being much bigger than their neighbors.
 
-TODO: Offset logic min /2
-
 {{> assets/deconv1d.html}}
 
 In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
@@ -65,6 +63,8 @@ When we stack multiple deconvolutions, the artifacts may cancel out, or they may
 
 *Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum*
 
+-----
+
 Balanced Upsampling
 ====================
 
@@ -72,8 +72,8 @@ To avoid these artifacts,
 
 *Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum*
 
-<figure class="w-page">
-{{> assets/upsample_DeconvTypes.svg}}
+<figure class="w-page-clip-left">
+<img src="assets/upsample_DeconvTypes.svg">
 </figure>
 
 *Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum*

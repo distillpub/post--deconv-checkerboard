@@ -21,10 +21,11 @@
 
   // SVG
   var fig = d3.select("#deconv1d");
+  var is_wide = fig.node().getBoundingClientRect().width > 600;
   var svg = fig.append("svg");
   svg.style({width: '100%', "max-height": '130px'});
   svg.attr("version", "1.1")
-  svg.attr("viewBox", "0 3.8 32 4")
+  svg.attr("viewBox", "4 3.8 24 4")
   svg.attr("preserveAspectRatio", "xMidYMid meet")
 
 
@@ -192,22 +193,23 @@
 
   }
 
-
-  fig.append("div")
-    .style("position", "absolute")
-    .style("top", "0px")
-    .style("right", "0px")
-    .style("width", "calc((100% - 648px)/2)")
-    .style("height", "100%")
-    .style("background", "linear-gradient(to right, rgba(255,255,255,0), #fcfcfc, #fcfcfc, #fcfcfc, #fcfcfc)")
-
+  if (is_wide){
     fig.append("div")
       .style("position", "absolute")
       .style("top", "0px")
-      .style("left", "0px")
-      .style("width", "calc((100% - 648px)/4)")
+      .style("right", "0px")
+      .style("width", "calc((100% - 648px)/2)")
       .style("height", "100%")
-      .style("background", "linear-gradient(to left, rgba(255,255,255,0), #fcfcfc)")
+      .style("background", "linear-gradient(to right, rgba(255,255,255,0), #fcfcfc, #fcfcfc, #fcfcfc, #fcfcfc)")
+
+      fig.append("div")
+        .style("position", "absolute")
+        .style("top", "0px")
+        .style("left", "0px")
+        .style("width", "calc((100% - 648px)/4)")
+        .style("height", "100%")
+        .style("background", "linear-gradient(to left, rgba(255,255,255,0), #fcfcfc)")
+    }
 
   var stride_ranges = [];
   var size_ranges = [];
@@ -216,37 +218,56 @@
 
   //fig.append('br');
   for (var l = 0; l < max_L; l++){
-    var div = fig.append("div");
-    //var div = fig;
-    if (l==0) div.style("display", "none")
 
-    stride_spans.push(div.append('span')
-      .style("position", "absolute")
-      .style("top", (30 + 200*(l-1))  + "px")
-      .style("right", "200px")
-      .style("right", "calc((100% - 648px)/2 - 200px)")
-    );
-    size_spans.push(div.append('span')
-      .style("position", "absolute")
-      .style("top", (80 + 200*(l-1))  + "px")
-      .style("right", "200px")
-      .style("right", "calc((100% - 648px)/2 - 200px)")
-    );
+    if (is_wide){
+      var div = fig.append("div");
+      if (l==0) div.style("display", "none")
+      stride_spans.push(div.append('span')
+        .style("position", "absolute")
+        .style("top", (30 + 200*(l-1))  + "px")
+        .style("right", "200px")
+        .style("right", "calc((100% - 648px)/2 - 200px)")
+      );
+      size_spans.push(div.append('span')
+        .style("position", "absolute")
+        .style("top", (80 + 200*(l-1))  + "px")
+        .style("right", "200px")
+        .style("right", "calc((100% - 648px)/2 - 200px)")
+      );
 
-    stride_ranges.push(div.append('input').attr('type', 'range')
-      .attr('min', 1).attr('max', max_sizes[l])
-      .style("position", "absolute")
-      .style("top", (20 + 200*(l-1)) + "px")
-      .style("right", "200px")
-      .style("right", "calc((100% - 648px)/2 - 200px)")
-    );
-    size_ranges.push(div.append('input')
-      .attr('type', 'range').attr('min', 1).attr('max', max_sizes[l])
-      .style("position", "absolute")
-      .style("top", (70 + 200*(l-1))  + "px")
-      .style("right", "200px")
-      .style("right", "calc((100% - 648px)/2 - 200px)")
-    );
+      stride_ranges.push(div.append('input').attr('type', 'range')
+        .attr('min', 1).attr('max', max_sizes[l])
+        .style("position", "absolute")
+        .style("top", (20 + 200*(l-1)) + "px")
+        .style("right", "200px")
+        .style("right", "calc((100% - 648px)/2 - 200px)")
+      );
+      size_ranges.push(div.append('input')
+        .attr('type', 'range').attr('min', 1).attr('max', max_sizes[l])
+        .style("position", "absolute")
+        .style("top", (70 + 200*(l-1))  + "px")
+        .style("right", "200px")
+        .style("right", "calc((100% - 648px)/2 - 200px)")
+      );
+    } else {
+      var div = fig.append("div").style({float: "left", "margin": 0, "margin-right" : "20px"});
+      if (l==0) div.style("display", "none")
+      stride_ranges.push(div.append('input').attr('type', 'range')
+        .attr('min', 1).attr('max', max_sizes[l])
+      );
+      div.append("br");
+      stride_spans.push(div.append('span').style("margin-top", -5));
+      var div = fig.append("div").style({float: "left", "margin-right" : "20px"});
+      if (l==0) div.style("display", "none")
+      size_ranges.push(div.append('input')
+        .attr('type', 'range').attr('min', 1).attr('max', max_sizes[l])
+      );
+      div.append("br");
+      size_spans.push(div.append('span'));
+    }
+  }
+  if (!is_wide) {
+    fig.append("br").style("clear", "left")
   }
 
   function update_vis(){
