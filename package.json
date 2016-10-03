@@ -3,7 +3,7 @@
   "main": "index.md",
   "name": "better-upsample",
   "typewriter": {
-    "title": "Better Upsampling",
+    "title": "Avoiding Checkerboard Artifacts in Neural Networks",
     "description": " ",
     "url": "",
     "github": "",
@@ -17,6 +17,13 @@
         "url": "",
         "affiliation": "Google Brain",
         "affiliation-url": "http://g.co/brain"
+      },
+      {
+        "firstName": "Vincent",
+        "lastName": "Dumoulin",
+        "personalURL": "http://vdumoulin.github.io/",
+        "affiliation": "Université de Montréal",
+        "affiliationURL": "https://mila.umontreal.ca/en/"
       },
       {
         "firstName": "Chris",

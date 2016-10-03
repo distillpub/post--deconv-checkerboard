@@ -70,7 +70,7 @@ they often compound, creating artifacts on a variety of scales.
 {{> assets/deconv1d_multi.html}}
 
 Stride 1 deconvolutions -- which we often see as the last layer in successful models
--- are quite effective dampening artifacts. They remove artifacts of frequencies
+-- are quite effective dampening artifacts. They can remove artifacts of frequencies
 that divide their size, and reduce others artifacts of frequency less than their
 size. However, artifacts can still leak through, as seen in many recent models.
 
@@ -85,7 +85,6 @@ Overlap & Learning
 Thinking about things in terms of uneven overlap is -- while a useful framing --
 kind of simplistic. For better or worse, our models learn weights for their deconvolutions.
 
-
 In theory, they could learn to carefully write to unevenly overlapping squares so that the output
 is evenly balanced.
 In practice, however, neural networks struggle to learn to not create these patterns.
@@ -99,7 +98,7 @@ The artifacts seem milder, and have a different pattern, but they're present.
 which uses stride 2 size 4 deconvolutions, as an example.)
 
 There's probably a lot of factors at play here.
-One issue may be with the discriminator and its gradients, which we'll discuss more later.
+One issue, in the case of GANs, may be with the discriminator and its gradients, which we'll discuss more later.
 But a big part of the problem seems to be deconvolution.
 At best, deconvolution is fragile because it is very easily represents artifact creating functions, even when the size is carefully chosen.
 At worst, creating artifacts is the default behavior of deconvolution.
@@ -107,23 +106,95 @@ At worst, creating artifacts is the default behavior of deconvolution.
 Is there a different way to upsample that is more resistant to artifacts?
 
 -----
-Balanced Upsampling
+Better Upsampling
 ====================
 
-To avoid these artifacts,
+To avoid these artifacts, we'd like an alternative to regular deconvolution ("transposed convolution").
+Unlike deconvolution, this approach to upsampling shouldn't have artifacts as its default behavior.
+Ideally, it would go further, and be biased against such artifacts.
+
+One approach is to make sure you use a kernel size that is divided by your stride.
+This avoids the uneven overlap issue,
+and you can speed up computation using the efficient sub-pixel convolution trick ([Shi, et al., 2016](https://arxiv.org/pdf/1609.05158.pdf)).
+However, while this helps, it is still easy for deconvolution to fall into artifacts.
+
+Another approach is to separate out upsampling to a higher resolution from convolution to compute features.
+For example, you might resize the image (using [nearest-neighbor interpolation](https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation) or [bilinear interpolation](https://en.wikipedia.org/wiki/Bilinear_interpolation)) and then do a convolutional layer.
+This seems like a natural approach, and roughly similar methods have seen success in the image super-resolution literature.
+
+Both deconvolution and the different resize-convolution approaches are linear operations, and can be interpreted as matrices.
+This a helpful way to see the differences between them.
 
 <figure class="w-page-clip-left">
 <img src="assets/upsample_DeconvTypes.svg">
 </figure>
 
+Where deconvolution has a unique entries for each output window, resize-convolution is implicitly weight-tying in a way that discourages high frequency artifacts.
+
+Our experience has been that nearest-neighbor resize followed by a convolution works very well, in a wide variety of contexts.
+Switching out deconvolution layers for these layers causes artifacts to disappear in GANs, VAEs, and even artistic style transfer...
+
+**TODO** Write more about our results, possibly as a different section.
+
+
+
 
 <!--
 Things Luke Vilnis suggested we look into:
 * should we be calling it deconv?
-* this paper argues for a different but related architecture http://128.84.21.199/pdf/1609.07009.pdf (seems like high-res literature already does soemthing similar to what we are doing)
+* this paper argues for a different but related architecture http://128.84.21.199/pdf/1609.07009.pdf (seems like high-res literature already does something similar to what we are doing)
 -->
 
 
 -----
 Artifacts in Gradients
 ======================
+
+Whenever we compute the gradients of a convolutional layer,
+we do deconvolution (transposed convolution) on the backward pass.
+If the stride doesn't divide the kernel size,
+we get checkerboard patterns in the gradient,
+just as we do when we use deconvolution to generate images.
+
+This means that some neurons will get many times the gradient of their neighbors, basically arbitrarily.
+Similarly, the network will care much more about some pixels in the input than others, for no good reason.
+This strange property is wide spread among modern vision models, and it suggests a number of questions.
+
+* **Generative Adverserial Network**:
+One thing you might wonder about is the artifacts in GAN produced images.
+We've seen that standard deconvolution-based generators are biased towards creating them,
+but could a bias in the discriminators makes it hard for them to catch these artifacts, or even encourage them?
+
+* **Training Neural Networks**:
+If some neurons get many times the gradient of others, does that present a challenge for training?
+Is it an argument for optimizers like ADAM, which are invariant to the scale of the gradient different neurons get?
+
+* **Feature Visualization**:
+A major challenge for optimization-based feature visualization in vision models is that the gradient of the models we are visualizing seem to be dominated by high frequency components.
+Successful visualizations need to somehow compensate for this.
+There are a number of approaches, including gittering the image between steps, imposing a prior or constraint on the image, blur the gradient, or just directly normalize the frequencies.
+However, one wonders if this high-frequency noise is just an artifact of strided convolutions, and the issue might just go away if we didn't use them.
+**TODO: citations**
+<!--  https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb -->
+
+* **Adveserial counter-examples**:
+
+
+
+---
+Conclusion
+==========
+
+The standard approach of producing images with deconvolution -- despite its successes! -- has some very conceptually simple issues, that lead to artifacts in produced images.
+Using a natural alternative without these issues causes the artifacts to go away.
+(Analogous arguments suggest that standard strided convolutional layers may also have issues, although we're not aware of any actual problems arising from this.)
+
+This seems like an exciting opportunity to us!
+It suggests that there is low-hanging fruit to be found in carefully thinking through neural network architectures, even once where we seem to have clean working solutions.
+
+In the mean time, we've provided an easy to use solution that improves the quality of many approaches to generating images with neural networks. We look forward to seeing what people do with it, and whether it helps in domains like audio where high frequency artifacts would be particularly problematic.
+
+
+
+
+<!-- Acknowledgments: Shan Carter, Luke Vilnis, Jon Shlens -->
