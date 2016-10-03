@@ -195,6 +195,29 @@ It suggests that there is low-hanging fruit to be found in carefully thinking th
 In the mean time, we've provided an easy to use solution that improves the quality of many approaches to generating images with neural networks. We look forward to seeing what people do with it, and whether it helps in domains like audio where high frequency artifacts would be particularly problematic.
 
 
+<!-- Appendix -->
+<section class="appendix w-body">
+  <h3>Acknowledgments</h3>
+  <p>Thank you to Shan Carter, Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.
+  
+  <h3 id="citation">Errors, Reuse, and Citation</h3>
+  <p>If you see mistakes or want to suggest changes, please submit a pull request on <a href="{{{typewriter.github}}}">github</a>.
+  <p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY 2.0</a>, unless noted otherwise, with the source available on available on <a href="{{{typewriter.github}}}">github</a>. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from …".
+  <p>For attribution in academic contexts, please cite this work as
+  <pre class="citation">Chris Olah & Shan Carter, "{{typewriter.title}}", Distill, {{typewriter.firstPublishedYear}}.</pre>
+  <p>BibTeX citation
+  {{=<% %>=}}
+<pre class="citation">@misc{<%typewriter.slug%>,
+  author = {<%typewriter.bibtexAuthors%>},
+  title = {<%typewriter.title%>},
+  year = {<%typewriter.firstPublishedYear%>},
+  howpublished = {<%typewriter.url%>}
+}</pre>
 
+  <%={{ }}=%>
+  <h3>References</h3>
+  <ul class="references">
+    <li></li>
+  </ul>
 
-<!-- Acknowledgments: Shan Carter, Luke Vilnis, Jon Shlens -->
+</section>
