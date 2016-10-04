@@ -1,5 +1,5 @@
 <style>
-.pattern-examples {
+.pattern-examples > div {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -22,11 +22,10 @@
 .pattern-examples .original:after {
   content: "";
   display: block;
-  width: 110%;
-  height: 110%;
+  width: 100%;
+  height: 140%;
   position: absolute;
-  top: -5%;
-  left: -5%;
+  top: -20%;
 }
 
 .pattern-examples .example .reticle {
@@ -80,55 +79,57 @@
 
 </style>
 
-<figure class="w-body pattern-examples">
-  <div class="example">
-    <div class="original" data-focus="10,0.05,0.84">
-      <img src="assets/im_sample_salimans.png">
-      <div class="reticle"></div>
+<figure class="pattern-examples w-screen">
+  <div class="w-body">
+    <div class="example">
+      <div class="original" data-focus="10,0.05,0.84">
+        <img src="assets/im_sample_salimans.png">
+        <div class="reticle"></div>
+      </div>
+      <div class="closeup">
+        <img src="assets/im_sample_salimans.png">
+      </div>
+      <figcaption>
+        <a href="">Blah, et al., 2016</a>
+        Shadows are a problem
+      </figcaption>
     </div>
-    <div class="closeup">
-      <img src="assets/im_sample_salimans.png">
+    <div class="example">
+      <div class="original" data-focus="5,0.73,0.26">
+        <img src="assets/im_sample_donahue.png">
+        <div class="reticle"></div>
+      </div>
+      <div class="closeup">
+        <img src="assets/im_sample_donahue.png">
+      </div>
+      <figcaption>
+        <a href="">Blah, et al., 2016</a>
+      </figcaption>
     </div>
-    <figcaption>
-      <a href="">Blah, et al., 2016</a>
-      Shadows are a problem
-    </figcaption>
-  </div>
-  <div class="example">
-    <div class="original" data-focus="4,0.1,0.1">
-      <img src="assets/im_sample_donahue.png">
-      <div class="reticle"></div>
+    <div class="example">
+      <div class="original" data-focus="4,0.1,0.1">
+        <img src="assets/im_sample_donahue.png">
+        <div class="reticle"></div>
+      </div>
+      <div class="closeup">
+        <img src="assets/im_sample_donahue.png">
+      </div>
+      <figcaption>
+        <a href="">Blah, et al., 2016</a>
+      </figcaption>
     </div>
-    <div class="closeup">
-      <img src="assets/im_sample_donahue.png">
+    <div class="example">
+      <div class="original" data-focus="4,0.1,0.1">
+        <img src="assets/im_sample_donahue.png">
+        <div class="reticle"></div>
+      </div>
+      <div class="closeup">
+        <img src="assets/im_sample_donahue.png">
+      </div>
+      <figcaption>
+        <a href="">Blah, et al., 2016</a>
+      </figcaption>
     </div>
-    <figcaption>
-      <a href="">Blah, et al., 2016</a>
-    </figcaption>
-  </div>
-  <div class="example">
-    <div class="original" data-focus="4,0.1,0.1">
-      <img src="assets/im_sample_donahue.png">
-      <div class="reticle"></div>
-    </div>
-    <div class="closeup">
-      <img src="assets/im_sample_donahue.png">
-    </div>
-    <figcaption>
-      <a href="">Blah, et al., 2016</a>
-    </figcaption>
-  </div>
-  <div class="example">
-    <div class="original" data-focus="4,0.1,0.1">
-      <img src="assets/im_sample_donahue.png">
-      <div class="reticle"></div>
-    </div>
-    <div class="closeup">
-      <img src="assets/im_sample_donahue.png">
-    </div>
-    <figcaption>
-      <a href="">Blah, et al., 2016</a>
-    </figcaption>
   </div>
 </figure>
 
@@ -136,6 +137,11 @@
 
 var html = d3.select(".pattern-examples");
 var original = html.selectAll(".example .original");
+html
+    .on("mouseleave", function() {
+      console.log("out")
+      original.each(resetReticle);
+    });
 
 original
     .datum(function() {
@@ -147,10 +153,11 @@ original
       };
     })
     .on("mousemove", updateReticle)
-    .on("mouseout", resetReticle)
     .each(resetReticle);
 
 function updateReticle(d) {
+
+  original.each(resetReticle);
   var x = d3.event.offsetX / this.getBoundingClientRect().width;
   var y = d3.event.offsetY / this.getBoundingClientRect().height;
   setPosition(this, x, y, d.zoom, 100);
