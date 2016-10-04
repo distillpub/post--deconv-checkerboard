@@ -6,7 +6,7 @@
 
   var fig = d3.select("#deconv2d");
 
-
+  var resetIntervalId;
 
   var X = 13, Y = 9;
   var size = 3, stride = 2;
@@ -46,7 +46,7 @@
   rects.attr('d', d => proj_line([{x: d.x+0, y: d.y+0, z: 0}, {x: d.x+0, y: d.y+1, z: 0}, {x: d.x+1, y: d.y+1, z: 0},
                                     {x: d.x+1, y: d.y+0, z: 0}, {x: d.x+0, y: d.y+0, z: 0}]))
 
-  var floater_g = svg.append('g').style("opacity", 0);;
+  var floater_g = svg.append('g').style("opacity", 0);
 
   var step_n = 0;
   var reset_pending = false;
