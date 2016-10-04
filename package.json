@@ -2,7 +2,7 @@
 {
   "main": "index.md",
   "name": "better-upsample",
-  "typewriter": {
+  "distill": {
     "title": "Avoiding Checkerboard Artifacts in Neural Networks",
     "description": " ",
     "url": "",
