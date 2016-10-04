@@ -3,6 +3,17 @@
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  position: relative;
+}
+
+.pattern-examples > div:after {
+  overflow: visible;
+  content: "";
+  background-image: url("assets/pointer.svg");
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  left: -51px;
 }
 
 .pattern-examples .example {
