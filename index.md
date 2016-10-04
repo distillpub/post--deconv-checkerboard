@@ -1,4 +1,4 @@
-<!-- <link rel="stylesheet" type="text/css" href="assets/common.css"> -->
+<link rel="stylesheet" type="text/css" href="assets/w_page.css">
 <script src="assets/d3.min.js"></script>
 <script src="assets/d3-path.min.js"></script>
 <script src="assets/underscore.js"></script>
