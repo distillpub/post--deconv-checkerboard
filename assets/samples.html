@@ -4,23 +4,38 @@
   display: -webkit-flex;
   display: flex;
 }
+
 .pattern-examples .example {
   width: 100%;
-  margin-right: 24px;
+  margin-right: 2.5%;
 }
+
 .pattern-examples .example:last-of-type {
   margin-right: 0;
 }
+
 .pattern-examples .original {
   position: relative;
   margin-bottom: 12px;
 }
+
+.pattern-examples .original:after {
+  content: "";
+  display: block;
+  width: 110%;
+  height: 110%;
+  position: absolute;
+  top: -5%;
+  left: -5%;
+}
+
 .pattern-examples .example .reticle {
   position: absolute;
   pointer-events: none;
 }
 
 .pattern-examples .example .reticle:after {
+  box-sizing: border-box;
   position: relative;
   width: 100%;
   height: 100%;
@@ -30,7 +45,10 @@
   border: 1px solid white;
   display: block;
   content: '';
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
+
 .pattern-examples img {
   display: block;
   width: 100%;
