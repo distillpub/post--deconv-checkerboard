@@ -1,0 +1,209 @@
+<style>
+.pattern-examples {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.pattern-examples .example {
+  width: 100%;
+  margin-right: 2.5%;
+}
+
+.pattern-examples .example:last-of-type {
+  margin-right: 0;
+}
+
+.pattern-examples .original {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.pattern-examples .original:after {
+  content: "";
+  display: block;
+  width: 110%;
+  height: 110%;
+  position: absolute;
+  top: -5%;
+  left: -5%;
+}
+
+.pattern-examples .example .reticle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.pattern-examples .example .reticle:after {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  left: -50%;
+  top: -50%;
+  border-radius: 50%;
+  border: 1px solid white;
+  display: block;
+  content: '';
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.pattern-examples img {
+  display: block;
+  width: 100%;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: optimizeSpeed;
+  image-rendering: pixelated;
+}
+
+.pattern-examples .closeup {
+  display: block;
+  width: 100%;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  position: relative;
+  border: 1px solid black;
+  overflow: hidden;
+}
+
+.pattern-examples .closeup img {
+  position: absolute;
+  width: 800%;
+}
+
+.pattern-examples .closeup:after {
+  padding-top: 100%;
+  display: block;
+  content: '';
+}
+
+</style>
+
+<figure class="w-body pattern-examples">
+  <div class="example">
+    <div class="original" data-focus="10,0.05,0.84">
+      <img src="assets/im_sample_salimans.png">
+      <div class="reticle"></div>
+    </div>
+    <div class="closeup">
+      <img src="assets/im_sample_salimans.png">
+    </div>
+    <figcaption>
+      <a href="">Blah, et al., 2016</a>
+      Shadows are a problem
+    </figcaption>
+  </div>
+  <div class="example">
+    <div class="original" data-focus="4,0.1,0.1">
+      <img src="assets/im_sample_donahue.png">
+      <div class="reticle"></div>
+    </div>
+    <div class="closeup">
+      <img src="assets/im_sample_donahue.png">
+    </div>
+    <figcaption>
+      <a href="">Blah, et al., 2016</a>
+    </figcaption>
+  </div>
+  <div class="example">
+    <div class="original" data-focus="4,0.1,0.1">
+      <img src="assets/im_sample_donahue.png">
+      <div class="reticle"></div>
+    </div>
+    <div class="closeup">
+      <img src="assets/im_sample_donahue.png">
+    </div>
+    <figcaption>
+      <a href="">Blah, et al., 2016</a>
+    </figcaption>
+  </div>
+  <div class="example">
+    <div class="original" data-focus="4,0.1,0.1">
+      <img src="assets/im_sample_donahue.png">
+      <div class="reticle"></div>
+    </div>
+    <div class="closeup">
+      <img src="assets/im_sample_donahue.png">
+    </div>
+    <figcaption>
+      <a href="">Blah, et al., 2016</a>
+    </figcaption>
+  </div>
+</figure>
+
+<script>(function() {
+
+var html = d3.select(".pattern-examples");
+var original = html.selectAll(".example .original");
+
+original
+    .datum(function() {
+      var focus = this.getAttribute("data-focus").split(",")
+      return {
+        zoom: focus[0],
+        x: focus[1],
+        y: focus[2]
+      };
+    })
+    .on("mousemove", updateReticle)
+    .on("mouseout", resetReticle)
+    .each(resetReticle);
+
+function updateReticle(d) {
+  var x = d3.event.offsetX / this.getBoundingClientRect().width;
+  var y = d3.event.offsetY / this.getBoundingClientRect().height;
+  setPosition(this, x, y, d.zoom, 100);
+}
+
+function resetReticle(d) {
+  setPosition(this, d.x, d.y, d.zoom, 300);
+}
+
+function setPosition(element, x, y, zoom, duration) {
+  var margin = 1 / zoom / 2;
+  x = Math.min(Math.max(margin, x), 1 - margin)
+  y = Math.min(Math.max(margin, y), 1 - margin)
+  var parent = d3.select(element.parentElement);
+  var reticle = parent.select(".reticle");
+  var closeup = parent.select(".closeup img");
+
+  console.log(x, y)
+
+  reticle
+      .style("width", 100 / zoom + "%")
+      .style("height", 100 / zoom + "%")
+      .transition()
+      .ease(d3.ease("cubic-out"))
+      .duration(duration)
+      .styleTween("left", function (d, i, a) {
+        var from = this.style.left,
+            to = x * 100 + "%";
+        return d3.interpolateString(from, to);
+      })
+      .styleTween("top", function (d, i, a) {
+        var from = this.style.top,
+            to = y * 100 + "%";
+        return d3.interpolateString(from, to);
+      })
+
+  closeup
+      .style("width", zoom * 100 + "%")
+      .style("height", zoom * 100 + "%")
+      .transition()
+      .ease(d3.ease("cubic-out"))
+      .duration(duration)
+      .styleTween("left", function (d, i, a) {
+        var from = this.style.left,
+            to = -x * 100 * zoom + 50 + "%";
+        return d3.interpolateString(from, to);
+      })
+      .styleTween("top", function (d, i, a) {
+        var from = this.style.top,
+            to = -y * 100 * zoom + 50 + "%";
+        return d3.interpolateString(from, to);
+      })
+}
+
+
+})();</script>
