@@ -15,8 +15,7 @@ What's going on? Do neural networks hate bright colors? The actual cause of thes
 
 
 ---
-Deconvolution & Overlap
-=======================
+## Deconvolution & Overlap
 
 When we have neural networks generate images, we often have them build them up
 from low resolution, high-level descriptions.
@@ -74,8 +73,7 @@ The further a color, like bright red, is away from the average color,
 the more deconvolution needs to contribute to push it there.
 
 -----
-Overlap & Learning
-====================
+## Overlap & Learning
 
 Thinking about things in terms of uneven overlap is -- while a useful framing --
 kind of simplistic. For better or worse, our models learn weights for their deconvolutions.
@@ -101,8 +99,7 @@ At worst, creating artifacts is the default behavior of deconvolution.
 Is there a different way to upsample that is more resistant to artifacts?
 
 -----
-Better Upsampling
-====================
+## Better Upsampling
 
 To avoid these artifacts, we'd like an alternative to regular deconvolution ("transposed convolution").
 Unlike deconvolution, this approach to upsampling shouldn't have artifacts as its default behavior.
@@ -127,8 +124,7 @@ This a helpful way to see the differences between them.
 Where deconvolution has a unique entries for each output window, resize-convolution is implicitly weight-tying in a way that discourages high frequency artifacts.
 
 ----
-Image Generation Results
-=========================
+## Image Generation Results
 
 Our experience has been that nearest-neighbor resize followed by a convolution works very well, in a wide variety of contexts.
 
@@ -157,8 +153,7 @@ Things Luke Vilnis suggested we look into:
 
 
 -----
-Artifacts in Gradients
-======================
+## Artifacts in Gradients
 
 Whenever we compute the gradients of a convolutional layer,
 we do deconvolution (transposed convolution) on the backward pass.
@@ -191,8 +186,7 @@ However, one wonders if this high-frequency noise is just an artifact of strided
 
 
 ---
-Conclusion
-==========
+## Conclusion
 
 The standard approach of producing images with deconvolution -- despite its successes! -- has some very conceptually simple issues, that lead to artifacts in produced images.
 Using a natural alternative without these issues causes the artifacts to go away.
