@@ -1,0 +1,54 @@
+<style>
+
+.style-examples > .row {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  /*align-items: center;*/
+  margin-bottom: 10px;
+}
+
+.style-examples > .row > .example {
+  flex-grow: 3;
+  width: 300%;
+  margin-right: 10px;
+}
+
+.style-examples > .row > .explanation {
+  flex-grow: 2;
+  width: 200%;
+  margin-left: 10px;
+}
+
+.style-examples img {
+  display: block;
+  width: 100%;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: optimizeSpeed;
+  image-rendering: pixelated;
+}
+
+</style>
+
+<figure class="style-examples w-body">
+  <div class="row">
+    <div class="example">
+      <img src="assets/style_artifacts.png">
+    </div>
+    <div class="explanation">
+      <figcaption>
+        Using deconvolution.<br><i>Heavy checkerboard artifacts.</i>
+      </figcaption>
+    </div>
+  </div>
+  <div class="row">
+    <div class="example">
+      <img src="assets/style_clean.png">
+    </div>
+    <div class="explanation">
+      <figcaption>
+        Using resize-convoution.<br><i>No checkerboard artifacts.</i>
+      </figcaption>
+    </div>
+  </div>
+</figure>
