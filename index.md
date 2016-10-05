@@ -162,7 +162,7 @@ we get checkerboard patterns in the gradient,
 just as we do when we use deconvolution to generate images.
 
 This means that some neurons will get many times the gradient of their neighbors, basically arbitrarily.
-Similarly, the network will care much more about some pixels in the input than others, for no good reason.
+Equivalently, the network will care much more about some pixels in the input than others, for no good reason.
 This strange property is wide spread among modern vision models, and it suggests a number of questions.
 
 * **Generative Adverserial Network**:
@@ -174,6 +174,11 @@ but could a bias in the discriminators makes it hard for them to catch these art
 If some neurons get many times the gradient of others, does that present a challenge for training?
 Is it an argument for optimizers like ADAM, which are invariant to the scale of the gradient different neurons get?
 
+* **Adversarial Counter-Examples**:
+Does having some pixels effect the network output much more than others exaggerate adversarial counter-examples?
+Because the derivative is concentrated on small number of pixels,
+small perturbations of those pixels may have outsized effects.
+
 * **Feature Visualization**:
 A major challenge for optimization-based feature visualization in vision models is that the gradient of the models we are visualizing seem to be dominated by high frequency components.
 Successful visualizations need to somehow compensate for this.
@@ -181,8 +186,6 @@ There are a number of approaches, including jittering the image between steps, i
 However, one wonders if this high-frequency noise is just an artifact of strided convolutions, and the issue might just go away if we didn't use them.
 **TODO: citations**
 <!--  https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb -->
-
-* **Adversarial counter-examples**:
 
 
 ---
