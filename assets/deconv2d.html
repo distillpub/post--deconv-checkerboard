@@ -57,6 +57,11 @@
     reset_pending = false;
   }
   function step(){
+    var box = fig.node().getBoundingClientRect();
+    var height = window.innerHeight||document.documentElement.clientHeight;
+    if (!(box.top >= 0 && box.bottom <= height)) return;
+    if (document.visibilityState === "hidden") return;
+    //if (svg_style.display === 'none') return;
     var nX = Math.ceil((X-size+1)/stride), nY = Math.ceil((Y-size+1)/stride);
     //console.log(nX, nY, step_n);
     if (step_n == nX*nY) {
