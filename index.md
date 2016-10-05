@@ -26,13 +26,13 @@ In order to do this, we need some way to go from a lower resolution image to a h
 We generally do this with the *deconvolution* (or transposed convolution) operation.
 Roughly, deconvolution layers allows the model to use every point
 in the small image to "paint" a square in the larger one.
-(For a detailed disucssion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf).)
+(For a detailed discussion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf).)
 
 Unfortunately, deconvolution can easily have uneven overlap,
 putting more of the metaphorical paint in some places than others.
-While the neural network could, in principle, carefully learn weights to avoid this
+While the network could, in principle, carefully learn weights to avoid this
 -- as we'll discuss in more detail later --
-in practice they struggle to avoid it completely.
+in practice neural networks struggle to avoid it completely.
 
 {{> assets/deconv1d.html}}
 
@@ -57,11 +57,12 @@ they often compound, creating artifacts on a variety of scales.
 {{> assets/deconv1d_multi.html}}
 
 Stride 1 deconvolutions -- which we often see as the last layer in successful models
--- are quite effective dampening artifacts. They can remove artifacts of frequencies
+-- are quite effective dampening artifacts (eg. <a href="https://arxiv.org/pdf/1606.03498v1.pdf">Salimans et al., 2016</a>).
+ They can remove artifacts of frequencies
 that divide their size, and reduce others artifacts of frequency less than their
 size. However, artifacts can still leak through, as seen in many recent models.
 
-In addition to the high frequency checkerboard-like artifacts we observed above
+In addition to the high frequency checkerboard-like artifacts we observed above,
 early deconvolutions can create lower-frequency artifacts,
 which we'll explore in more detail later.
 
@@ -124,7 +125,7 @@ Image Generation Results
 
 Our experience has been that nearest-neighbor resize followed by a convolution works very well, in a wide variety of contexts.
 
-One case we've found this approach to help is Generative Adverserial Networks. Simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
+One case where we've found this approach to help is Generative Adverserial Networks. Simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
 
 {{> assets/deconv_fixes.html}}
 
@@ -174,13 +175,12 @@ Is it an argument for optimizers like ADAM, which are invariant to the scale of 
 * **Feature Visualization**:
 A major challenge for optimization-based feature visualization in vision models is that the gradient of the models we are visualizing seem to be dominated by high frequency components.
 Successful visualizations need to somehow compensate for this.
-There are a number of approaches, including gittering the image between steps, imposing a prior or constraint on the image, blur the gradient, or just directly normalize the frequencies.
+There are a number of approaches, including jittering the image between steps, imposing a prior or constraint on the image, blurring the gradient, or just directly normalizing the frequencies.
 However, one wonders if this high-frequency noise is just an artifact of strided convolutions, and the issue might just go away if we didn't use them.
 **TODO: citations**
 <!--  https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb -->
 
 * **Adveserial counter-examples**:
-
 
 
 ---
@@ -206,7 +206,7 @@ In the mean time, we've provided an easy to use solution that improves the quali
   <p>If you see mistakes or want to suggest changes, please submit a pull request on <a href="{{{distill.github}}}">github</a>.
   <p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY 2.0</a>, unless noted otherwise, with the source available on available on <a href="{{{distill.github}}}">github</a>. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from …".
   <p>For attribution in academic contexts, please cite this work as
-  <pre class="citation">Chris Olah & Shan Carter, "{{distill.title}}", Distill, {{distill.firstPublishedYear}}.</pre>
+  <pre class="citation">Augustus Odena, Vincent Dumoulin, & Chris Olah. "{{distill.title}}", Distill, {{distill.firstPublishedYear}}.</pre>
   <p>BibTeX citation
   {{=<% %>=}}
 <pre class="citation">@misc{<%distill.slug%>,
