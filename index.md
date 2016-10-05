@@ -202,7 +202,7 @@ In the mean time, we've provided an easy to use solution that improves the quali
 
 
 <!-- Appendix -->
-<section class="appendix w-body">
+<section class="appendix">
   <h3>Acknowledgments</h3>
   <p>We are very grateful to Shan Carter for his wonderful improvements to the first interactive diagram, design advice, and editorial taste.</p>
   <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
