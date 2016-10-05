@@ -1,12 +1,15 @@
 <style>
-.pattern-examples > div {
+.pattern-examples {
+  width: 100%;
+}
+.pattern-examples > figure {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
   position: relative;
 }
 
-.pattern-examples > div:after {
+.pattern-examples > figure:after {
   overflow: visible;
   content: "";
   background-image: url("assets/pointer.svg");
@@ -104,8 +107,8 @@
 
 </style>
 
-<figure class="pattern-examples w-screen">
-  <div class="w-body">
+<div class="pattern-examples">
+  <figure class="w-body">
     <div class="example">
       <div class="original" data-focus="5,0.87,0.24">
         <img src="assets/im_sample_dcgan.png">
@@ -156,15 +159,15 @@
         <b><i>Using our method.</i></b>
       </figcaption>
     </div>
-  </div>
-</figure>
+  </figure>
+</div>
 
 <script>(function() {
 
 var html = d3.select(".pattern-examples");
 var original = html.selectAll(".example .original");
 html
-    .on("mouseleave", function() {
+    .on("mouseleave", () => {
       console.log("out")
       original.each(resetReticle);
     });
