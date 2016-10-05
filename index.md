@@ -26,7 +26,7 @@ In order to do this, we need some way to go from a lower resolution image to a h
 We generally do this with the *deconvolution* (or transposed convolution) operation.
 Roughly, deconvolution layers allows the model to use every point
 in the small image to "paint" a square in the larger one.
-(For a detailed discussion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf).)
+(For more detailed discussion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf) and [Shi, et al., 2016](https://arxiv.org/pdf/1609.07009.pdf).)
 
 Unfortunately, deconvolution can easily have uneven overlap,
 putting more of the metaphorical paint in some places than others.
@@ -56,8 +56,9 @@ they often compound, creating artifacts on a variety of scales.
 
 {{> assets/deconv1d_multi.html}}
 
-Stride 1 deconvolutions -- which we often see as the last layer in successful models
--- are quite effective dampening artifacts (eg. <a href="https://arxiv.org/pdf/1606.03498v1.pdf">Salimans et al., 2016</a>).
+Stride 1 deconvolutions --
+which we often see as the last layer in successful models (eg. <a href="https://arxiv.org/pdf/1606.03498v1.pdf">Salimans et al., 2016</a>)
+-- are quite effective dampening artifacts.
  They can remove artifacts of frequencies
 that divide their size, and reduce others artifacts of frequency less than their
 size. However, artifacts can still leak through, as seen in many recent models.
@@ -65,6 +66,12 @@ size. However, artifacts can still leak through, as seen in many recent models.
 In addition to the high frequency checkerboard-like artifacts we observed above,
 early deconvolutions can create lower-frequency artifacts,
 which we'll explore in more detail later.
+
+These artifacts tend to be most prominent when outputting unusual colors.
+Since neural network layers typically have a bias
+(a learned value added to the output) it's easy to output the average color.
+The further a color, like bright red, is away from the average color,
+the more deconvolution needs to contribute to push it there.
 
 -----
 Overlap & Learning
@@ -103,7 +110,7 @@ Ideally, it would go further, and be biased against such artifacts.
 
 One approach is to make sure you use a kernel size that is divided by your stride.
 This avoids the uneven overlap issue,
-and you can speed up computation using the efficient sub-pixel convolution trick ([Shi, et al., 2016](https://arxiv.org/pdf/1609.05158.pdf)).
+and you can speed up computation using the efficient sub-pixel convolution trick ([Shi, et al., 2016b](https://arxiv.org/pdf/1609.05158.pdf)).
 However, while this helps, it is still easy for deconvolution to fall into artifacts.
 
 Another approach is to separate out upsampling to a higher resolution from convolution to compute features.
