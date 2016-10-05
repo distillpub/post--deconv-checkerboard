@@ -42,7 +42,7 @@ The overlap pattern also forms in two dimensions.
 The uneven overlaps on the two axes multiply together,
 creating a characteristic checkerboard-like pattern of varying magnitudes.
 
-{{! assets/deconv2d.html}}
+{{> assets/deconv2d.html}}
 
 In fact, the uneven overlap tends to be more extreme in two dimensions!
 Because the two patterns are multiplied together, the uneveness gets squared.
@@ -118,15 +118,28 @@ This a helpful way to see the differences between them.
 
 Where deconvolution has a unique entries for each output window, resize-convolution is implicitly weight-tying in a way that discourages high frequency artifacts.
 
+----
+Image Generation Results
+=========================
+
 Our experience has been that nearest-neighbor resize followed by a convolution works very well, in a wide variety of contexts.
-For example, in GANs, simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
+
+One case we've found this approach to help is Generative Adverserial Networks. Simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
 
 {{> assets/deconv_fixes.html}}
 
+We are convinced that this isn't GAN specific because we see these same artifacts in other kinds of models, and have found that they also go away when we switch to resize-convolution upsampling.
 
-Switching out deconvolution layers for these layers causes artifacts to disappear in GANs, VAEs, and even artistic style transfer...
+For a very different example, consider real-time artistic style transfer ([Johnson, et al., 2016](https://arxiv.org/pdf/1603.08155v1.pdf)) where a neural net is trained to accelerate artistic style transfer.
+We've found these to be vulnerable to checkerboard artifacts (especially when the cost doesn't explicitly resist them).
+However, switching deconvolutional layers for resize-convolution layers makes the artifacts disappear.
 
-**TODO** Write more about our results, possibly as a different section.
+{{> assets/style_fix.html}}
+
+Forthcoming papers from the Google Brain team will demonstrate the benefits of this technique
+in more thorough experiments and state-of-the-art results.
+(We chose to present this technique separately because we felt it merited more detailed discussion.)
+
 
 <!--
 Things Luke Vilnis suggested we look into:
