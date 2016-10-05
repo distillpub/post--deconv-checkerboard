@@ -123,7 +123,7 @@ Switching out deconvolution layers for these layers causes artifacts to disappea
 
 **TODO** Write more about our results, possibly as a different section.
 
-
+{{> assets/deconv_fixes.html}}
 
 
 <!--
