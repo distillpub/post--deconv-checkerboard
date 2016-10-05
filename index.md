@@ -45,7 +45,7 @@ creating a characteristic checkerboard-like pattern of varying magnitudes.
 {{> assets/deconv2d.html}}
 
 In fact, the uneven overlap tends to be more extreme in two dimensions!
-Because the two patterns are multiplied together, the uneveness gets squared.
+Because the two patterns are multiplied together, the unevenness gets squared.
 For example, in one dimension, a stride 2, size 3 deconvolution has some outputs with twice the number of inputs as others,
 but in two dimensions this becomes a factor of four.
 
@@ -125,7 +125,7 @@ Image Generation Results
 
 Our experience has been that nearest-neighbor resize followed by a convolution works very well, in a wide variety of contexts.
 
-One case where we've found this approach to help is Generative Adverserial Networks. Simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
+One case where we've found this approach to help is Generative Adversarial Networks. Simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
 
 {{> assets/deconv_fixes.html}}
 
@@ -180,7 +180,7 @@ However, one wonders if this high-frequency noise is just an artifact of strided
 **TODO: citations**
 <!--  https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb -->
 
-* **Adveserial counter-examples**:
+* **Adversarial counter-examples**:
 
 
 ---
@@ -200,7 +200,8 @@ In the mean time, we've provided an easy to use solution that improves the quali
 <!-- Appendix -->
 <section class="appendix w-body">
   <h3>Acknowledgments</h3>
-  <p>Thank you to Shan Carter, Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.
+  <p>We are very grateful to Shan Carter for his wonderful improvements to the first interactive diagram, design advice, and editorial taste.</p>
+  <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
 
   <h3 id="citation">Errors, Reuse, and Citation</h3>
   <p>If you see mistakes or want to suggest changes, please submit a pull request on <a href="{{{distill.github}}}">github</a>.
