@@ -178,6 +178,7 @@ original
         y: focus[2]
       };
     })
+    .on("mouseleave", resetReticle)
     .on("mousemove", updateReticle)
     .each(resetReticle);
 
