@@ -119,12 +119,14 @@ This a helpful way to see the differences between them.
 Where deconvolution has a unique entries for each output window, resize-convolution is implicitly weight-tying in a way that discourages high frequency artifacts.
 
 Our experience has been that nearest-neighbor resize followed by a convolution works very well, in a wide variety of contexts.
-Switching out deconvolution layers for these layers causes artifacts to disappear in GANs, VAEs, and even artistic style transfer...
-
-**TODO** Write more about our results, possibly as a different section.
+For example, in GANs, simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
 
 {{> assets/deconv_fixes.html}}
 
+
+Switching out deconvolution layers for these layers causes artifacts to disappear in GANs, VAEs, and even artistic style transfer...
+
+**TODO** Write more about our results, possibly as a different section.
 
 <!--
 Things Luke Vilnis suggested we look into:

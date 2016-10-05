@@ -1,0 +1,82 @@
+<style>
+
+.fix-examples > .row {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  /*align-items: center;*/
+  margin-bottom: 10px;
+}
+
+.fix-examples > .row > .example {
+  flex-grow: 1;
+  width: 100%;
+  margin-right: 10px;
+}
+
+.fix-examples > .row > .explanation {
+  flex-grow: 2;
+  width: 200%;
+  margin-left: 10px;
+}
+
+.fix-examples img {
+  display: block;
+  width: 100%;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: optimizeSpeed;
+  image-rendering: pixelated;
+}
+
+</style>
+
+<figure class="fix-examples w-body">
+  <div class="row">
+    <div class="example">
+      <img src="assets/fix_two_deconv_boat.png">
+    </div>
+    <div class="example">
+      <img src="assets/fix_two_deconv_deer.png">
+    </div>
+    <div class="example">
+      <img src="assets/fix_two_deconv_prototype_plane.png">
+    </div>
+    <div class="explanation">
+      <figcaption>
+        Deconv in last two layers.<br> All other layers fixed.<br><i>Artifacts of frequency 2 and 4.</i>
+      </figcaption>
+    </div>
+  </div>
+  <div class="row">
+    <div class="example">
+      <img src="assets/fix_one_deconv_boat.png">
+    </div>
+    <div class="example">
+      <img src="assets/fix_one_deconv_deer.png">
+    </div>
+    <div class="example">
+      <img src="assets/fix_one_deconv_prototype_plane.png">
+    </div>
+    <div class="explanation">
+      <figcaption>
+        Deconv only in last layer.<br> All other layers fixed.<br><i>Artifacts of frequency 2.</i>
+      </figcaption>
+    </div>
+  </div>
+  <div class="row">
+    <div class="example">
+      <img src="assets/.png">
+    </div>
+    <div class="example">
+      <img src="assets/.png">
+    </div>
+    <div class="example">
+      <img src="assets/.png">
+    </div>
+    <div class="explanation">
+      <figcaption>
+        All layers fixed.<br><i>No artifacts.</i>
+      </figcaption>
+    </div>
+  </div>
+</figure>
