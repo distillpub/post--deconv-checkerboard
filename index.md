@@ -218,7 +218,7 @@ In the mean time, we've provided an easy to use solution that improves the quali
 [Shi, et al., 2016b]: https://arxiv.org/pdf/1609.05158.pdf
 
 
-<!-- Appendix -->
+
 <section class="appendix">
 
   <h3>Acknowledgments</h3>
