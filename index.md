@@ -2,6 +2,7 @@
 <script src="assets/d3.min.js"></script>
 <script src="assets/d3-path.min.js"></script>
 <script src="assets/underscore.js"></script>
+<script src="assets/vis_functions.js"></script>
 <h1>{{ distill.title }}</h1>
 {{> byline.html}}
 
@@ -23,7 +24,7 @@ This allows the network to describe the rough image and then fill in the details
 
 In order to do this, we need some way to go from a lower resolution image to a higher one.
 We generally do this with the *deconvolution* (or transposed convolution) operation.
-Roughly, deconvolution layers allows the model to use every point
+Roughly, deconvolution layers allow the model to use every point
 in the small image to "paint" a square in the larger one.
 (For more detailed discussion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf) and [Shi, et al., 2016](https://arxiv.org/pdf/1609.07009.pdf).)
 
@@ -57,7 +58,7 @@ they often compound, creating artifacts on a variety of scales.
 
 Stride 1 deconvolutions --
 which we often see as the last layer in successful models (eg. <a href="https://arxiv.org/pdf/1606.03498v1.pdf">Salimans et al., 2016</a>)
--- are quite effective dampening artifacts.
+-- are quite effective at dampening artifacts.
  They can remove artifacts of frequencies
 that divide their size, and reduce others artifacts of frequency less than their
 size. However, artifacts can still leak through, as seen in many recent models.
@@ -108,7 +109,7 @@ Ideally, it would go further, and be biased against such artifacts.
 One approach is to make sure you use a kernel size that is divided by your stride.
 This avoids the uneven overlap issue,
 and you can speed up computation using the efficient sub-pixel convolution trick ([Shi, et al., 2016b](https://arxiv.org/pdf/1609.05158.pdf)).
-However, while this helps, it is still easy for deconvolution to fall into artifacts.
+However, while this helps, it is still easy for deconvolution to fall into creating artifacts.
 
 Another approach is to separate out upsampling to a higher resolution from convolution to compute features.
 For example, you might resize the image (using [nearest-neighbor interpolation](https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation) or [bilinear interpolation](https://en.wikipedia.org/wiki/Bilinear_interpolation)) and then do a convolutional layer.
@@ -131,6 +132,12 @@ Our experience has been that nearest-neighbor resize followed by a convolution w
 One case where we've found this approach to help is Generative Adversarial Networks. Simply switching out the standard deconvolutional layers for nearest-neighbor resize followed by convolution causes artifacts of different frequencies to disappear.
 
 {{> assets/deconv_fixes.html}}
+
+In fact, the difference in artifacts can be ween before any training occurs.
+If we look at the images the generator produces, initialized with random weights,
+we can already see the artifacts:
+
+{{> assets/deconv_fixes_step0.html}}
 
 We are convinced that this isn't GAN specific because we see these same artifacts in other kinds of models, and have found that they also go away when we switch to resize-convolution upsampling.
 
@@ -191,7 +198,7 @@ However, one wonders if this high-frequency noise is just an artifact of strided
 ---
 ## Conclusion
 
-The standard approach of producing images with deconvolution -- despite its successes! -- has some very conceptually simple issues, that lead to artifacts in produced images.
+The standard approach of producing images with deconvolution -- despite its successes! -- has some very conceptually simple issues that lead to artifacts in produced images.
 Using a natural alternative without these issues causes the artifacts to go away.
 (Analogous arguments suggest that standard strided convolutional layers may also have issues, although we're not aware of any actual problems arising from this.)
 
@@ -201,11 +208,25 @@ It suggests that there is low-hanging fruit to be found in carefully thinking th
 In the mean time, we've provided an easy to use solution that improves the quality of many approaches to generating images with neural networks. We look forward to seeing what people do with it, and whether it helps in domains like audio where high frequency artifacts would be particularly problematic.
 
 
+[Dumoulin, et al., 2016]: https://arxiv.org/pdf/1606.00704.pdf
+[Dumoulin & Visin, 2016]: https://arxiv.org/pdf/1603.07285.pdf
+[Donahue, et al., 2016]: https://arxiv.org/pdf/1605.09782.pdf
+[Johnson, et al., 2016]: https://arxiv.org/pdf/1603.08155.pdf
+[Radford, et al., 2015]: https://arxiv.org/pdf/1511.06434.pdf
+[Salimans et al., 2016]: https://arxiv.org/pdf/1606.03498.pdf
+[Shi, et al., 2016]: https://arxiv.org/pdf/1609.07009.pdf
+[Shi, et al., 2016b]: https://arxiv.org/pdf/1609.05158.pdf
+
+
 <!-- Appendix -->
-<section class="appendix w-body">
+<section class="appendix">
+
   <h3>Acknowledgments</h3>
-  <p>We are very grateful to Shan Carter for his wonderful improvements to the first interactive diagram, design advice, and editorial taste.</p>
-  <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
+  <p>We are very grateful to Shan Carter for his wonderful improvements to the first interactive diagram, design advice, and editorial taste. Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
+  <p>This work was made possible by the support of the <a href="https://research.google.com/teams/brain/">Google Brain</a> team. Augustus Odena's work was done as part of the <a href="https://research.google.com/teams/brain/residency/">Google Brain Residency Program</a>. Vincent Dumoulin did this while visiting the Brain Team as an intern.</p>
+
+  <h3>Author Contributions</h3>
+  <p>Augustus and Chris recognized the connection between deconvolution and artifacts. Augustus ran the GAN experiments. Vincent ran the artistic style transfer experiments. Chris created the visualizations and wrote most of the article.</p>
 
   <h3 id="citation">Errors, Reuse, and Citation</h3>
   <p>If you see mistakes or want to suggest changes, please submit a pull request on <a href="{{{distill.github}}}">github</a>.
@@ -222,9 +243,22 @@ In the mean time, we've provided an easy to use solution that improves the quali
 }</pre>
 
   <%={{ }}=%>
+  <style>
+  .references li a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+  </style>
   <h3>References</h3>
   <ul class="references">
-    <li></li>
+    <li><a href="https://arxiv.org/pdf/1606.00704.pdf">Dumoulin, V., Belghazi, I., Poole, B., Lamb, A., Arjovsky, M., Mastropietro, O. and Courville, A., 2016. <b>Adversarially Learned Inference</b>. arXiv preprint arXiv:1606.00704.</a></li>
+    <li><a href="https://arxiv.org/pdf/1603.07285.pdf">Dumoulin, V. and Visin, F., 2016. <b>A guide to convolution arithmetic for deep learning</b>. arXiv preprint arXiv:1603.07285.</a></li>
+    <li><a href="https://arxiv.org/pdf/1605.09782.pdf">Donahue, J., Krähenbühl, P. and Darrell, T., 2016. <b>Adversarial Feature Learning</b>. arXiv preprint arXiv:1605.09782.</a></li>
+    <li><a href="https://arxiv.org/pdf/1603.08155.pdf">Johnson, J., Alahi, A. and Fei-Fei, L., 2016. <b>Perceptual losses for real-time style transfer and super-resolution</b>. arXiv preprint arXiv:1603.08155.</a></li>
+    <li><a href="https://arxiv.org/pdf/1511.06434.pdf">Radford, A., Metz, L. and Chintala, S., 2015. <b>Unsupervised representation learning with deep convolutional generative adversarial networks</b>. arXiv preprint arXiv:1511.06434.</a></li>
+    <li><a href="https://arxiv.org/pdf/1606.03498.pdf">Salimans, T., Goodfellow, I., Zaremba, W., Cheung, V., Radford, A. and Chen, X., 2016. <b>Improved techniques for training GANs</b>. arXiv preprint arXiv:1606.03498.</a></li>
+    <li><a href="https://arxiv.org/pdf/1609.07009.pdf">Shi, W., Caballero, J., Theis, L., Huszar, F., Aitken, A., Ledig, C. and Wang, Z., 2016. <b>Is the deconvolution layer the same as a convolutional layer?</b>. arXiv preprint arXiv:1609.07009.</a></li>
+    <li><a href="https://arxiv.org/pdf/1609.05158.pdf">Shi, W., Caballero, J., Huszár, F., Totz, J., Aitken, A.P., Bishop, R., Rueckert, D. and Wang, Z., 2016. <b>Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network.</b> In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 1874-1883).a></li>
   </ul>
 
 </section>
