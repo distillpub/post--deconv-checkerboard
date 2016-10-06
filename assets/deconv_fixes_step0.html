@@ -8,16 +8,20 @@
   margin-bottom: 10px;
 }
 
-.fix-step0-examples > .row > .example {
+.fix-step0-examples > .row > .exampleA {
   flex-grow: 1;
   width: 100%;
   margin-right: 10px;
+}
+.fix-step0-examples > .row > .exampleB {
+  flex-grow: 1;
+  width: 100%;
+  margin-right: 20px;
 }
 
 .fix-step0-examples > .row > .explanation {
   flex-grow: 2;
   width: 200%;
-  margin-left: 10px;
 }
 
 .fix-step0-examples img {
@@ -32,40 +36,39 @@
 
 <figure class="fix-step0-examples w-body-plus">
   <div class="row">
-    <div class="example">
-      <img src="assets/fix_two_deconv_boat.png">
+    <div class="exampleA">
+      <img src="assets/im_rand_two_0.png">
     </div>
-    <div class="example">
-      <img src="assets/fix_two_deconv_deer.png">
+    <div class="exampleB">
+      <img src="assets/im_rand_two_1.png">
     </div>
-    <div class="example">
-      <img src="assets/fix_two_deconv_prototype_plane.png">
+    <div class="exampleA">
+      <img src="assets/im_rand_one_0.png">
     </div>
-    <div class="example">
-      <img src="assets/fix_two_deconv_bird.png">
+    <div class="exampleB">
+      <img src="assets/im_rand_one_1.png">
     </div>
-    <div class="explanation">
-      <figcaption>
-        Deconv in last two layers.<br> Other layers use resize-convolution.<br><i>Artifacts of frequency 2 and 4.</i>
-      </figcaption>
+    <div class="exampleA">
+      <img src="assets/im_rand_zero_1.png">
+    </div>
+    <div class="exampleB">
+      <img src="assets/im_rand_zero_2.png">
     </div>
   </div>
   <div class="row">
-    <div class="example">
-      <img src="assets/fix_one_deconv_boat.png">
-    </div>
-    <div class="example">
-      <img src="assets/fix_one_deconv_deer.png">
-    </div>
-    <div class="example">
-      <img src="assets/fix_one_deconv_prototype_plane.png">
-    </div>
-    <div class="example">
-      <img src="assets/fix_one_deconv_bird.png">
+    <div class="explanation">
+      <figcaption>
+        Deconv in last two layer.<br> <i>Artifacts prior to any training.</i>
+      </figcaption>
     </div>
     <div class="explanation">
       <figcaption>
-        Deconv only in last layer.<br> Other layers use resize-convolution.<br><i>Artifacts of frequency 2.</i>
+        Deconv only in last layer.<br><i>Artifacts prior to any training.</i>
+      </figcaption>
+    </div>
+    <div class="explanation">
+      <figcaption>
+        All layers use resize-convolution.<br><i>No artifacts before or after training.</i>
       </figcaption>
     </div>
   </div>

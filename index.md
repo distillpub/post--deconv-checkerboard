@@ -118,7 +118,7 @@ This seems like a natural approach, and roughly similar methods have seen succes
 Both deconvolution and the different resize-convolution approaches are linear operations, and can be interpreted as matrices.
 This a helpful way to see the differences between them.
 
-<figure class="w-page-clip-left">
+<figure class="w-page">
 <img src="assets/upsample_DeconvTypes.svg">
 </figure>
 
@@ -139,9 +139,11 @@ we can already see the artifacts:
 
 {{> assets/deconv_fixes_step0.html}}
 
-We are convinced that this isn't GAN specific because we see these same artifacts in other kinds of models, and have found that they also go away when we switch to resize-convolution upsampling.
+This suggests that the artifacts are due to this method of generating images, rather than adversarial training.
+(It also suggests that we might be able to learn a lot about good generator design without the slow feedback cycle of training models.)
 
-For a very different example, consider real-time artistic style transfer ([Johnson, et al., 2016](https://arxiv.org/pdf/1603.08155v1.pdf)) where a neural net is trained to accelerate artistic style transfer.
+Another reason to believe these artifacts aren't GAN specific is that we see them in other kinds of models, and have found that they also go away when we switch to resize-convolution upsampling.
+For example, consider real-time artistic style transfer ([Johnson, et al., 2016](https://arxiv.org/pdf/1603.08155v1.pdf)) where a neural net is trained to directly generate style-transferred images.
 We've found these to be vulnerable to checkerboard artifacts (especially when the cost doesn't explicitly resist them).
 However, switching deconvolutional layers for resize-convolution layers makes the artifacts disappear.
 
