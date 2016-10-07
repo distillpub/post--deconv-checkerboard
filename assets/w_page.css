@@ -1,3 +1,12 @@
+.references li a {
+  text-decoration: inherit;
+  color: inherit;
+}
+.appendix .citation {
+  white-space: pre-wrap;
+}
+
+
 .post > .w-page-clip, .post > .w-page-clip-left, .post > .w-page-clip-right  {
   width: 984px;
   margin-left: calc((100% - 984px) / 2);

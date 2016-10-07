@@ -23,10 +23,13 @@ from low resolution, high-level descriptions.
 This allows the network to describe the rough image and then fill in the details.
 
 In order to do this, we need some way to go from a lower resolution image to a higher one.
-We generally do this with the *deconvolution* (or transposed convolution) operation.
+We generally do this with the *deconvolution* operation.
 Roughly, deconvolution layers allow the model to use every point
 in the small image to "paint" a square in the larger one.
-(For more detailed discussion, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf) and [Shi, et al., 2016](https://arxiv.org/pdf/1609.07009.pdf).)
+
+(Deconvolution has a number of interpretations and different names, including "transposed convolution."
+We use the name "deconvolution" in this article for brevity.
+For excellent discussion of deconvolution, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf) and [Shi, et al., 2016a](https://arxiv.org/pdf/1609.07009.pdf).)
 
 Unfortunately, deconvolution can easily have uneven overlap,
 putting more of the metaphorical paint in some places than others.
@@ -106,23 +109,28 @@ To avoid these artifacts, we'd like an alternative to regular deconvolution ("tr
 Unlike deconvolution, this approach to upsampling shouldn't have artifacts as its default behavior.
 Ideally, it would go further, and be biased against such artifacts.
 
-One approach is to make sure you use a kernel size that is divided by your stride.
-This avoids the uneven overlap issue,
-and you can speed up computation using the efficient sub-pixel convolution trick ([Shi, et al., 2016b](https://arxiv.org/pdf/1609.05158.pdf)).
-However, while this helps, it is still easy for deconvolution to fall into creating artifacts.
+One approach is to make sure you use a kernel size that is divided by your stride,
+avoiding the overlap issue.
+This is equivalent to "sub-pixel convolution," a technique which has recently
+had success in image super-resolution ([Shi, et al., 2016b](https://arxiv.org/pdf/1609.05158.pdf)).
+However, while this approach helps, it is still easy for deconvolution to fall into creating artifacts.
+
 
 Another approach is to separate out upsampling to a higher resolution from convolution to compute features.
 For example, you might resize the image (using [nearest-neighbor interpolation](https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation) or [bilinear interpolation](https://en.wikipedia.org/wiki/Bilinear_interpolation)) and then do a convolutional layer.
-This seems like a natural approach, and roughly similar methods have seen success in the image super-resolution literature.
-
-Both deconvolution and the different resize-convolution approaches are linear operations, and can be interpreted as matrices.
-This a helpful way to see the differences between them.
+This seems like a natural approach, and roughly similar methods have worked well in image super-resolution (eg. [Dong, et al., 2015](https://arxiv.org/pdf/1501.00092v3.pdf)).
 
 <figure class="w-page">
 <img src="assets/upsample_DeconvTypes.svg">
 </figure>
 
+Both deconvolution and the different resize-convolution approaches are linear operations, and can be interpreted as matrices.
+This a helpful way to see the differences between them.
 Where deconvolution has a unique entries for each output window, resize-convolution is implicitly weight-tying in a way that discourages high frequency artifacts.
+
+We've had our best results with nearest-neighbor interpolation, and had difficulty making bilinear resize work.
+This may simply mean that, for our models, the nearest-neighbor happened to works well with hyper-parameters optimized for deconvolution.
+It might also point at trickier issues with naively using bilinear interpolation, where it resists high-frequency image features too strongly.
 
 ----
 ## Image Generation Results
@@ -151,7 +159,7 @@ However, switching deconvolutional layers for resize-convolution layers makes th
 
 Forthcoming papers from the Google Brain team will demonstrate the benefits of this technique
 in more thorough experiments and state-of-the-art results.
-(We chose to present this technique separately because we felt it merited more detailed discussion.)
+(We've chosen to present this technique separately because we felt it merited more detailed discussion, and because it cut across multiple papers.)
 
 
 <!--
@@ -189,13 +197,10 @@ Because the derivative is concentrated on small number of pixels,
 small perturbations of those pixels may have outsized effects.
 
 * **Feature Visualization**:
-A major challenge for optimization-based feature visualization in vision models is that the gradient of the models we are visualizing seem to be dominated by high frequency components.
-Successful visualizations need to somehow compensate for this.
-There are a number of approaches, including jittering the image between steps, imposing a prior or constraint on the image, blurring the gradient, or just directly normalizing the frequencies.
-However, one wonders if this high-frequency noise is just an artifact of strided convolutions, and the issue might just go away if we didn't use them.
-**TODO: citations**
-<!--  https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb -->
-
+A major challenge for optimization-based feature visualization in vision models is that the gradient of the models we are visualizing seem to be dominated by high frequency components ([Mordvintsev, 2016](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb)).
+Successful visualizations compensate for this in a variety of ways.
+However, one wonders if this high-frequency noise is just an artifact of strided convolutions.
+If so, the issue might just go away if we didn't use them.
 
 ---
 ## Conclusion
@@ -208,17 +213,6 @@ This seems like an exciting opportunity to us!
 It suggests that there is low-hanging fruit to be found in carefully thinking through neural network architectures, even once where we seem to have clean working solutions.
 
 In the mean time, we've provided an easy to use solution that improves the quality of many approaches to generating images with neural networks. We look forward to seeing what people do with it, and whether it helps in domains like audio where high frequency artifacts would be particularly problematic.
-
-
-[Dumoulin, et al., 2016]: https://arxiv.org/pdf/1606.00704.pdf
-[Dumoulin & Visin, 2016]: https://arxiv.org/pdf/1603.07285.pdf
-[Donahue, et al., 2016]: https://arxiv.org/pdf/1605.09782.pdf
-[Johnson, et al., 2016]: https://arxiv.org/pdf/1603.08155.pdf
-[Radford, et al., 2015]: https://arxiv.org/pdf/1511.06434.pdf
-[Salimans et al., 2016]: https://arxiv.org/pdf/1606.03498.pdf
-[Shi, et al., 2016]: https://arxiv.org/pdf/1609.07009.pdf
-[Shi, et al., 2016b]: https://arxiv.org/pdf/1609.05158.pdf
-
 
 
 <section class="appendix">
@@ -245,18 +239,14 @@ In the mean time, we've provided an easy to use solution that improves the quali
 }</pre>
 
   <%={{ }}=%>
-  <style>
-  .references li a {
-    color: inherit;
-    text-decoration: inherit;
-  }
-  </style>
   <h3>References</h3>
   <ul class="references">
+    <li><a href="https://arxiv.org/pdf/1501.00092.pdf">Dong, C., Loy, C.C., He, K. and Tang, X., 2014. <b>Image super-resolution using deep convolutional networks.</b> arXiv preprint arXiv:1501.00092.</a></li>
     <li><a href="https://arxiv.org/pdf/1606.00704.pdf">Dumoulin, V., Belghazi, I., Poole, B., Lamb, A., Arjovsky, M., Mastropietro, O. and Courville, A., 2016. <b>Adversarially Learned Inference</b>. arXiv preprint arXiv:1606.00704.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.07285.pdf">Dumoulin, V. and Visin, F., 2016. <b>A guide to convolution arithmetic for deep learning</b>. arXiv preprint arXiv:1603.07285.</a></li>
     <li><a href="https://arxiv.org/pdf/1605.09782.pdf">Donahue, J., Krähenbühl, P. and Darrell, T., 2016. <b>Adversarial Feature Learning</b>. arXiv preprint arXiv:1605.09782.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.08155.pdf">Johnson, J., Alahi, A. and Fei-Fei, L., 2016. <b>Perceptual losses for real-time style transfer and super-resolution</b>. arXiv preprint arXiv:1603.08155.</a></li>
+    <li><a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb"> Mordvintsev, A., 2016. <b>DeepDreaming with TensorFlow</b>. Github.</a></li>
     <li><a href="https://arxiv.org/pdf/1511.06434.pdf">Radford, A., Metz, L. and Chintala, S., 2015. <b>Unsupervised representation learning with deep convolutional generative adversarial networks</b>. arXiv preprint arXiv:1511.06434.</a></li>
     <li><a href="https://arxiv.org/pdf/1606.03498.pdf">Salimans, T., Goodfellow, I., Zaremba, W., Cheung, V., Radford, A. and Chen, X., 2016. <b>Improved techniques for training GANs</b>. arXiv preprint arXiv:1606.03498.</a></li>
     <li><a href="https://arxiv.org/pdf/1609.07009.pdf">Shi, W., Caballero, J., Theis, L., Huszar, F., Aitken, A., Ledig, C. and Wang, Z., 2016. <b>Is the deconvolution layer the same as a convolutional layer?</b>. arXiv preprint arXiv:1609.07009.</a></li>
