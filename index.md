@@ -94,7 +94,7 @@ The artifacts seem milder, and have a different pattern, but they're present.
 (See [Dumoulin, et al., 2016](https://arxiv.org/pdf/1606.00704v1.pdf),
 which uses stride 2 size 4 deconvolutions, as an example.)
 
-There's probably a lot of factors at play here.
+There are probably a lot of factors at play here.
 One issue, in the case of GANs, may be with the discriminator and its gradients, which we'll discuss more later.
 But a big part of the problem seems to be deconvolution.
 At best, deconvolution is fragile because it is very easily represents artifact creating functions, even when the size is carefully chosen.
@@ -141,7 +141,7 @@ One case where we've found this approach to help is Generative Adversarial Netwo
 
 {{> assets/deconv_fixes.html}}
 
-In fact, the difference in artifacts can be ween before any training occurs.
+In fact, the difference in artifacts can be seen before any training occurs.
 If we look at the images the generator produces, initialized with random weights,
 we can already see the artifacts:
 
@@ -192,7 +192,7 @@ If some neurons get many times the gradient of others, does that present a chall
 Is it an argument for optimizers like ADAM, which are invariant to the scale of the gradient different neurons get?
 
 * **Adversarial Counter-Examples**:
-Does having some pixels effect the network output much more than others exaggerate adversarial counter-examples?
+Does having some pixels affect the network output much more than others exaggerate adversarial counter-examples?
 Because the derivative is concentrated on small number of pixels,
 small perturbations of those pixels may have outsized effects.
 
@@ -210,7 +210,7 @@ Using a natural alternative without these issues causes the artifacts to go away
 (Analogous arguments suggest that standard strided convolutional layers may also have issues, although we're not aware of any actual problems arising from this.)
 
 This seems like an exciting opportunity to us!
-It suggests that there is low-hanging fruit to be found in carefully thinking through neural network architectures, even once where we seem to have clean working solutions.
+It suggests that there is low-hanging fruit to be found in carefully thinking through neural network architectures, even ones where we seem to have clean working solutions.
 
 In the mean time, we've provided an easy to use solution that improves the quality of many approaches to generating images with neural networks. We look forward to seeing what people do with it, and whether it helps in domains like audio where high frequency artifacts would be particularly problematic.
 
