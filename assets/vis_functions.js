@@ -196,7 +196,7 @@ function deconv1d(){
       .style("right", "0px")
       .style("width", "calc((100% - 648px)/2)")
       .style("height", "100%")
-      .style("background", "linear-gradient(to right, rgba(255,255,255,0), #fcfcfc, #fcfcfc, #fcfcfc, #fcfcfc)")
+      .style("background", "linear-gradient(to right, rgba(252,252,252,0), rgba(252,252,252,1), rgba(252,252,252,1), rgba(252,252,252,1), rgba(252,252,252,1))")
 
       fig.append("div")
         .style("position", "absolute")
@@ -204,7 +204,7 @@ function deconv1d(){
         .style("left", "0px")
         .style("width", "calc((100% - 648px)/4)")
         .style("height", "100%")
-        .style("background", "linear-gradient(to left, rgba(255,255,255,0), #fcfcfc)")
+        .style("background", "linear-gradient(to left, rgba(252,252,252,0), rgba(252,252,252,1))")
     }
 
   var stride_ranges = [];
@@ -634,7 +634,7 @@ function deconv1d_multi(){
       .style("right", "0px")
       .style("width", "calc((100% - 648px)/2)")
       .style("height", "100%")
-      .style("background", "linear-gradient(to right, rgba(255,255,255,0), #fcfcfc, #fcfcfc, #fcfcfc, #fcfcfc)");
+      .style("background", "linear-gradient(to right, rgba(252,252,252,0), rgba(252,252,252,1), rgba(252,252,252,1), rgba(252,252,252,1), rgba(252,252,252,1))");
 
       fig.append("div")
         .style("position", "absolute")
@@ -642,7 +642,7 @@ function deconv1d_multi(){
         .style("left", "0px")
         .style("width", "calc((100% - 648px)/4)")
         .style("height", "100%")
-        .style("background", "linear-gradient(to left, rgba(255,255,255,0), #fcfcfc)");
+        .style("background", "linear-gradient(to left, rgba(252,252,252,0), rgba(252,252,252,1))");
     }
 
   var stride_ranges = [];
