@@ -131,6 +131,7 @@ Where deconvolution has a unique entries for each output window, resize-convolut
 We've had our best results with nearest-neighbor interpolation, and had difficulty making bilinear resize work.
 This may simply mean that, for our models, the nearest-neighbor happened to works well with hyper-parameters optimized for deconvolution.
 It might also point at trickier issues with naively using bilinear interpolation, where it resists high-frequency image features too strongly.
+We don't necessarily think that either approach is the final solution to upsampling, but they do fix the checkerboard artifacts.
 
 ----
 ## Image Generation Results
@@ -174,14 +175,52 @@ Things Luke Vilnis suggested we look into:
 
 Whenever we compute the gradients of a convolutional layer,
 we do deconvolution (transposed convolution) on the backward pass.
-If the stride doesn't divide the kernel size,
-we get checkerboard patterns in the gradient,
+This can cause checkerboard patterns in the gradient,
 just as we do when we use deconvolution to generate images.
 
-This means that some neurons will get many times the gradient of their neighbors, basically arbitrarily.
-Equivalently, the network will care much more about some pixels in the input than others, for no good reason.
-This strange property is wide spread among modern vision models, and it suggests a number of questions.
+The presence of high-frequency "noise" in image model gradients is
+already known in the feature visualization community, where it's a major challenge.
+Somehow, feature visualization methods must compensate for this noise.
 
+For example, DeepDream ([Mordvintsev, et al., 2015](https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html))
+seems to cause destructive interference between artifacts in a number of ways,
+such as optimizing many features simultaneously, and optimizing at many offsets and scales.
+In particular, the "jitter" of optimizing at different offsets cancels out some of the checkerboard artifacts.
+
+
+{{> assets/deepdream_fix.html}}
+
+<!-- TODO: Should we talk about max pooling, Googlenet vs Inception? -->
+
+<!--This means that some neurons will get many times the gradient of their neighbors, basically arbitrarily.
+Equivalently, the network will care much more about some pixels in the input than others, for no good reason.
+This strange property is wide spread among modern vision models, and it suggests a number of questions.-->
+
+More recent work in feature visualization (eg. [Mordvintsev, 2016](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb)),
+has explicitly recognized and compensated for these high-frequency gradient components.
+One wonders if different neural network architectures could reduce the need for these
+
+Do these gradient artifacts effect GANs?
+If gradient artifacts can effect an image being optimized based on a neural networks gradients in feature visualization,
+we might also expect it to effect the family of images paramaterized by the generator as they're optimized by the discriminator in GANs.
+
+We've found that this does happen in some cases.
+When the generator is neither biased for or against checkerboard patterns,
+strided convolutions in the discriminator can cause them.
+
+{{> assets/discrim_fixes.html}}
+
+It's unclear what the broader implications of these gradient artifacts are.
+One way to think about them is that some neurons will get many times the gradient of their neighbors, basically arbitrarily.
+Equivalently, the network will care much more about some pixels in the input than others, for no good reason.
+Neither of those sounds ideal.
+
+It seems possible that having some pixels affect the network output much more than others may exaggerate adversarial counter-examples.
+Because the derivative is concentrated on small number of pixels,
+small perturbations of those pixels may have outsized effects.
+We have not investigated this.
+
+<!--
 * **Generative Adverserial Network**:
 One thing you might wonder about is the artifacts in GAN produced images.
 We've seen that standard deconvolution-based generators are biased towards creating them,
@@ -201,6 +240,7 @@ A major challenge for optimization-based feature visualization in vision models 
 Successful visualizations compensate for this in a variety of ways.
 However, one wonders if this high-frequency noise is just an artifact of strided convolutions.
 If so, the issue might just go away if we didn't use them.
+-->
 
 ---
 ## Conclusion
@@ -218,7 +258,13 @@ In the mean time, we've provided an easy to use solution that improves the quali
 <section class="appendix">
 
   <h3>Acknowledgments</h3>
-  <p>We are very grateful to Shan Carter for his wonderful improvements to the first interactive diagram, design advice, and editorial taste. Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
+  <p>We are very grateful to Shan Carter for his wonderful improvements to the first interactive diagram, design advice, and editorial taste.
+  We're also very grateful to David Dohan for providing us with an example of strided convolutions in discriminators causing artifacts
+  and to Mike Tyka who originally pointed out the connection between jitter and artifacts in DeepDream to us.
+  </p>
+
+  <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
+
   <p>This work was made possible by the support of the <a href="https://research.google.com/teams/brain/">Google Brain</a> team. Augustus Odena's work was done as part of the <a href="https://research.google.com/teams/brain/residency/">Google Brain Residency Program</a>. Vincent Dumoulin did this while visiting the Brain Team as an intern.</p>
 
   <h3>Author Contributions</h3>

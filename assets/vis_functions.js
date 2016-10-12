@@ -353,7 +353,7 @@ function deconv2d(){
   function step(){
     var box = fig.node().getBoundingClientRect();
     var height = window.innerHeight||document.documentElement.clientHeight;
-    if (!(box.top >= 0 && box.bottom <= height)) return;
+    if (!(box.top + 0.3*box.height >= 0 && box.bottom - 0.2*box.height <= height)) return;
     if (document.visibilityState === "hidden") return;
     //if (svg_style.display === 'none') return;
     var nX = Math.ceil((X-size+1)/stride), nY = Math.ceil((Y-size+1)/stride);
