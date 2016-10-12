@@ -1,0 +1,79 @@
+<style>
+
+.discrim-examples > .row {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  /*align-items: center;*/
+  margin-bottom: 10px;
+}
+
+.discrim-examples > .row > .exampleA {
+  flex-grow: 1;
+  width: 100%;
+  margin-right: 10px;
+}
+.discrim-examples > .row > .exampleB {
+  flex-grow: 1;
+  width: 100%;
+  margin-right: 20px;
+}
+
+.discrim-examples > .row > .explanationA {
+  flex-grow: 3;
+  width: 300%;
+  padding-right: 20px;
+}
+
+.discrim-examples > .row > .explanationB {
+  flex-grow: 3;
+  width: 300%;
+  padding-right: 10px;
+}
+
+.discrim-examples img {
+  display: block;
+  width: 100%;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: optimizeSpeed;
+  image-rendering: pixelated;
+}
+
+</style>
+
+<figure class="discrim-examples w-body-plus">
+  <div class="row">
+    <div class="exampleA">
+      <img src="assets/discrim_stride2_0.png">
+    </div>
+    <div class="exampleA">
+      <img src="assets/discrim_stride2_1.png">
+    </div>
+    <div class="exampleB">
+      <img src="assets/discrim_stride2_2.png">
+    </div>
+    <div class="exampleA">
+      <img src="assets/discrim_stride1_1.png">
+    </div>
+    <div class="exampleA">
+      <img src="assets/discrim_stride1_2.png">
+    </div>
+    <div class="exampleA">
+      <img src="assets/discrim_stride1_0.png">
+    </div>
+  </div>
+  <div class="row">
+    <div class="explanationA">
+      <figcaption>
+        Discriminator has stride 2 convolution in first layer.<br> <i>Strong frequency 2 aritfacts.</i>
+      </figcaption>
+    </div>
+    <div class="explanationB">
+      <figcaption>
+        Discriminator has regular convolution in first layer.<br> <i>Very mild artifacts.</i>
+      </figcaption>
+    </div>
+
+  </div>
+
+</figure>
