@@ -190,6 +190,14 @@ In particular, the "jitter" of optimizing at different offsets cancels out some 
 
 {{> assets/deepdream_fix.html}}
 
+(While much some of the artifacts are our standard checkerboard pattern,
+others are a less organized high-frequency pattern.
+We believe these to be caused by max pooling.
+Max pooling was previously linked to high-frequency artifacts in [Henaff & Simoncelli, 2015](https://arxiv.org/pdf/1409.1556.pdf).)
+<!--when interpolating between image representations
+in [Henaff & Simoncelli, 2015](https://arxiv.org/pdf/1409.1556.pdf) -- they recommend using L2 pooling instead.)-->
+
+
 <!-- TODO: Should we talk about max pooling, Googlenet vs Inception? -->
 
 <!--This means that some neurons will get many times the gradient of their neighbors, basically arbitrarily.
@@ -198,11 +206,11 @@ This strange property is wide spread among modern vision models, and it suggests
 
 More recent work in feature visualization (eg. [Mordvintsev, 2016](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb)),
 has explicitly recognized and compensated for these high-frequency gradient components.
-One wonders if different neural network architectures could reduce the need for these
+One wonders if better neural network architectures could make these efforts unnecessary.
 
 Do these gradient artifacts effect GANs?
 If gradient artifacts can effect an image being optimized based on a neural networks gradients in feature visualization,
-we might also expect it to effect the family of images paramaterized by the generator as they're optimized by the discriminator in GANs.
+we might also expect it to effect the family of images parameterized by the generator as they're optimized by the discriminator in GANs.
 
 We've found that this does happen in some cases.
 When the generator is neither biased for or against checkerboard patterns,
