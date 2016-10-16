@@ -33,13 +33,12 @@ For excellent discussion of deconvolution, see [Dumoulin & Visin, 2016](https://
 
 Unfortunately, deconvolution can easily have uneven overlap,
 putting more of the metaphorical paint in some places than others.
+In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
 While the network could, in principle, carefully learn weights to avoid this
 -- as we'll discuss in more detail later --
 in practice neural networks struggle to avoid it completely.
 
 {{> assets/deconv1d.html}}
-
-In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
 
 The overlap pattern also forms in two dimensions.
 The uneven overlaps on the two axes multiply together,
@@ -73,8 +72,8 @@ which we'll explore in more detail later.
 These artifacts tend to be most prominent when outputting unusual colors.
 Since neural network layers typically have a bias
 (a learned value added to the output) it's easy to output the average color.
-The further a color, like bright red, is away from the average color,
-the more deconvolution needs to contribute to push it there.
+The further a color -- like bright red -- is away from the average color,
+the more deconvolution needs to contribute.
 
 -----
 ## Overlap & Learning
@@ -85,8 +84,8 @@ kind of simplistic. For better or worse, our models learn weights for their deco
 In theory, they could learn to carefully write to unevenly overlapping squares so that the output
 is evenly balanced.
 In practice, however, neural networks struggle to learn to not create these patterns.
-This is kind of surprising to us:
-barring extreme regularization, it seems like they should be able to learn this.
+If you want to avoid creating artifacts, you need to sacrifice capacity which
+could be used for something else.
 
 In fact, not only do models with uneven overlap not learn to avoid this,
 but models with even overlap often learn kernels that cause similar artifacts!
@@ -126,10 +125,10 @@ This seems like a natural approach, and roughly similar methods have worked well
 
 Both deconvolution and the different resize-convolution approaches are linear operations, and can be interpreted as matrices.
 This a helpful way to see the differences between them.
-Where deconvolution has a unique entries for each output window, resize-convolution is implicitly weight-tying in a way that discourages high frequency artifacts.
+Where deconvolution has a unique entry for each output window, resize-convolution is implicitly weight-tying in a way that discourages high frequency artifacts.
 
 We've had our best results with nearest-neighbor interpolation, and had difficulty making bilinear resize work.
-This may simply mean that, for our models, the nearest-neighbor happened to works well with hyper-parameters optimized for deconvolution.
+This may simply mean that, for our models, the nearest-neighbor happened to work well with hyper-parameters optimized for deconvolution.
 It might also point at trickier issues with naively using bilinear interpolation, where it resists high-frequency image features too strongly.
 We don't necessarily think that either approach is the final solution to upsampling, but they do fix the checkerboard artifacts.
 
@@ -208,9 +207,9 @@ More recent work in feature visualization (eg. [Mordvintsev, 2016](https://githu
 has explicitly recognized and compensated for these high-frequency gradient components.
 One wonders if better neural network architectures could make these efforts unnecessary.
 
-Do these gradient artifacts effect GANs?
-If gradient artifacts can effect an image being optimized based on a neural networks gradients in feature visualization,
-we might also expect it to effect the family of images parameterized by the generator as they're optimized by the discriminator in GANs.
+Do these gradient artifacts affect GANs?
+If gradient artifacts can affect an image being optimized based on a neural networks gradients in feature visualization,
+we might also expect it to affect the family of images parameterized by the generator as they're optimized by the discriminator in GANs.
 
 We've found that this does happen in some cases.
 When the generator is neither biased for or against checkerboard patterns,
@@ -254,13 +253,13 @@ If so, the issue might just go away if we didn't use them.
 ## Conclusion
 
 The standard approach of producing images with deconvolution -- despite its successes! -- has some very conceptually simple issues that lead to artifacts in produced images.
-Using a natural alternative without these issues causes the artifacts to go away.
-(Analogous arguments suggest that standard strided convolutional layers may also have issues, although we're not aware of any actual problems arising from this.)
+Using a natural alternative without these issues causes the artifacts to go away
+(Analogous arguments suggest that standard strided convolutional layers may also have issues).
 
 This seems like an exciting opportunity to us!
 It suggests that there is low-hanging fruit to be found in carefully thinking through neural network architectures, even ones where we seem to have clean working solutions.
 
-In the mean time, we've provided an easy to use solution that improves the quality of many approaches to generating images with neural networks. We look forward to seeing what people do with it, and whether it helps in domains like audio where high frequency artifacts would be particularly problematic.
+In the meantime, we've provided an easy to use solution that improves the quality of many approaches to generating images with neural networks. We look forward to seeing what people do with it, and whether it helps in domains like audio, where high frequency artifacts would be particularly problematic.
 
 
 <section class="appendix">
