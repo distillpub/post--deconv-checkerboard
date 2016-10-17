@@ -145,6 +145,10 @@ This may simply mean that, for our models, the nearest-neighbor happened to work
 It might also point at trickier issues with naively using bilinear interpolation, where it resists high-frequency image features too strongly.
 We don't necessarily think that either approach is the final solution to upsampling, but they do fix the checkerboard artifacts.
 
+### Code
+
+Resize-convolution layers can be easily implemented in TensorFlow using [`tf.image.resize_images()`](https://www.tensorflow.org/versions/r0.11/api_docs/python/image.html#resize_images). For best results, use [`tf.pad()`](https://www.tensorflow.org/versions/r0.11/api_docs/python/array_ops.html#pad) before doing convolution with [`tf.nn.conv2d()`](https://www.tensorflow.org/versions/r0.11/api_docs/python/nn.html#conv2d) to avoid boundary artifacts.
+
 ----
 ## Image Generation Results
 
@@ -173,13 +177,6 @@ However, switching deconvolutional layers for resize-convolution layers makes th
 Forthcoming papers from the Google Brain team will demonstrate the benefits of this technique
 in more thorough experiments and state-of-the-art results.
 (We've chosen to present this technique separately because we felt it merited more detailed discussion, and because it cut across multiple papers.)
-
-
-<!--
-Things Luke Vilnis suggested we look into:
-* should we be calling it deconv?
-* this paper argues for a different but related architecture http://128.84.21.199/pdf/1609.07009.pdf (seems like high-res literature already does something similar to what we are doing)
--->
 
 
 -----
