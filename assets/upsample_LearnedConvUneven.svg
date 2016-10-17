@@ -1,6 +1,6 @@
 <svg id="text" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="984" height="121.55" viewBox="0 0 984 121.55">
   <defs>
-    <linearGradient id="linear-gradient" x1="400.81" y1="31.62" x2="435.16" y2="93.07" gradientUnits="userSpaceOnUse">
+    <linearGradient id="linear-gradient" x1="422.25" y1="20.55" x2="422.25" y2="100.22" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="navy" stop-opacity="0.22"/>
       <stop offset="0.5" stop-color="navy" stop-opacity="0.22"/>
       <stop offset="1" stop-color="navy" stop-opacity="0.44"/>
@@ -11,25 +11,25 @@
       <stop offset="1" stop-color="navy" stop-opacity="0.22"/>
     </linearGradient>
     <linearGradient id="linear-gradient-3" x1="449.38" y1="20.72" x2="449.38" y2="99.56" xlink:href="#linear-gradient-2"/>
-    <linearGradient id="linear-gradient-4" x1="209.81" y1="31.62" x2="244.16" y2="93.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-4" x1="231.25" y1="20.55" x2="231.25" y2="99.88" xlink:href="#linear-gradient"/>
     <linearGradient id="linear-gradient-5" x1="203.95" y1="20.72" x2="203.95" y2="99.56" xlink:href="#linear-gradient-2"/>
     <linearGradient id="linear-gradient-6" x1="258.47" y1="20.51" x2="258.47" y2="99.56" xlink:href="#linear-gradient-2"/>
-    <linearGradient id="linear-gradient-7" x1="466.31" y1="31.62" x2="500.66" y2="93.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-7" x1="487.75" y1="21.21" x2="487.75" y2="99.9" xlink:href="#linear-gradient"/>
     <linearGradient id="linear-gradient-8" x1="460.58" y1="20.72" x2="460.58" y2="99.56" xlink:href="#linear-gradient-2"/>
     <linearGradient id="linear-gradient-9" x1="514.88" y1="20.72" x2="514.88" y2="99.56" xlink:href="#linear-gradient-2"/>
-    <linearGradient id="linear-gradient-10" x1="531.15" y1="31.62" x2="565.5" y2="93.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-10" x1="552.58" y1="20.55" x2="552.58" y2="100.22" xlink:href="#linear-gradient"/>
     <linearGradient id="linear-gradient-11" x1="525.41" y1="20.72" x2="525.41" y2="99.56" xlink:href="#linear-gradient-2"/>
     <linearGradient id="linear-gradient-12" x1="579.72" y1="20.72" x2="579.72" y2="99.56" xlink:href="#linear-gradient-2"/>
-    <linearGradient id="linear-gradient-13" x1="596.31" y1="31.62" x2="630.66" y2="93.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-13" x1="617.75" y1="20.55" x2="617.75" y2="99.88" xlink:href="#linear-gradient"/>
     <linearGradient id="linear-gradient-14" x1="590.58" y1="20.72" x2="590.58" y2="99.56" xlink:href="#linear-gradient-2"/>
     <linearGradient id="linear-gradient-15" x1="644.88" y1="20.72" x2="644.88" y2="99.56" xlink:href="#linear-gradient-2"/>
-    <linearGradient id="linear-gradient-16" x1="661.31" y1="31.62" x2="695.66" y2="93.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-16" x1="682.75" y1="20.21" x2="682.75" y2="100.55" xlink:href="#linear-gradient"/>
     <linearGradient id="linear-gradient-17" x1="655.58" y1="20.72" x2="655.58" y2="99.56" xlink:href="#linear-gradient-2"/>
     <linearGradient id="linear-gradient-18" x1="709.88" y1="20.72" x2="709.88" y2="99.56" xlink:href="#linear-gradient-2"/>
-    <linearGradient id="linear-gradient-19" x1="726.65" y1="31.62" x2="761" y2="93.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-19" x1="748.08" y1="20.21" x2="748.08" y2="99.22" xlink:href="#linear-gradient"/>
     <linearGradient id="linear-gradient-20" x1="720.91" y1="20.72" x2="720.91" y2="99.56" xlink:href="#linear-gradient-2"/>
     <linearGradient id="linear-gradient-21" x1="775.22" y1="20.72" x2="775.22" y2="99.56" xlink:href="#linear-gradient-2"/>
-    <linearGradient id="linear-gradient-22" x1="791.98" y1="31.62" x2="826.33" y2="93.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-22" x1="813.42" y1="20.88" x2="813.42" y2="100.21" xlink:href="#linear-gradient"/>
     <linearGradient id="linear-gradient-23" x1="786.24" y1="20.22" x2="786.24" y2="99.56" xlink:href="#linear-gradient-2"/>
     <linearGradient id="linear-gradient-24" x1="840.55" y1="20.55" x2="840.55" y2="99.56" xlink:href="#linear-gradient-2"/>
   </defs>

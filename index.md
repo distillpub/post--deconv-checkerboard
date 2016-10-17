@@ -81,25 +81,28 @@ the more deconvolution needs to contribute.
 Thinking about things in terms of uneven overlap is -- while a useful framing --
 kind of simplistic. For better or worse, our models learn weights for their deconvolutions.
 
-In theory, they could learn to carefully write to unevenly overlapping squares so that the output
+In theory, our models could learn to carefully write to unevenly overlapping positions so that the output
 is evenly balanced.
 
 <figure class="w-page">
 <img src="assets/upsample_LearnedConvUneven.svg">
 </figure>
 
-In practice, however, neural networks struggle to learn to completely avoid these patterns.
+This is a tricky balancing act to achieve, especially when one has multiple channels interacting.
+Avoiding them significantly restricts the possible filters, sacrificing model capacity.
+In practice, neural networks struggle to learn to completely avoid these patterns.
 
 In fact, not only do models with uneven overlap not learn to avoid this,
 but models with even overlap often learn kernels that cause similar artifacts!
 While it isn't their default behavior the way it is for uneven overlap,
-even overlap deconvolution can very easily cause artifacts.
+it's still very easy for even overlap deconvolution to cause artifacts.
 
 <figure class="w-page">
 <img src="assets/upsample_LearnedConvEven.svg">
 </figure>
 
-In practice, the artifacts seem milder, and have a different pattern, but they're present.
+Completely avoiding artifacts is still a significant restriction on filters,
+and in practice the artifacts are still present in these models, although they seem milder.
 (See [Dumoulin, et al., 2016](https://arxiv.org/pdf/1606.00704v1.pdf),
 which uses stride 2 size 4 deconvolutions, as an example.)
 
