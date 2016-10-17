@@ -205,7 +205,7 @@ In particular, the "jitter" of optimizing at different offsets cancels out some 
 (While much some of the artifacts are our standard checkerboard pattern,
 others are a less organized high-frequency pattern.
 We believe these to be caused by max pooling.
-Max pooling was previously linked to high-frequency artifacts in [Henaff & Simoncelli, 2015](https://arxiv.org/pdf/1409.1556.pdf).)
+Max pooling was previously linked to high-frequency artifacts in [Henaff & Simoncelli, 2015](https://arxiv.org/pdf/1511.06394.pdf).)
 <!--when interpolating between image representations
 in [Henaff & Simoncelli, 2015](https://arxiv.org/pdf/1409.1556.pdf) -- they recommend using L2 pooling instead.)-->
 
@@ -288,7 +288,7 @@ In the meantime, we've provided an easy to use solution that improves the qualit
   <p>This work was made possible by the support of the <a href="https://research.google.com/teams/brain/">Google Brain</a> team. Augustus Odena's work was done as part of the <a href="https://research.google.com/teams/brain/residency/">Google Brain Residency Program</a>. Vincent Dumoulin did this while visiting the Brain Team as an intern.</p>
 
   <h3>Author Contributions</h3>
-  <p>Augustus and Chris recognized the connection between deconvolution and artifacts. Augustus ran the GAN experiments. Vincent ran the artistic style transfer experiments. Chris created the visualizations and wrote most of the article.</p>
+  <p>Augustus and Chris recognized the connection between deconvolution and artifacts. Augustus ran the GAN experiments. Vincent ran the artistic style transfer experiments. Chris ran the DeepDream experiments, created the visualizations and wrote most of the article.</p>
 
   <h3 id="citation">Errors, Reuse, and Citation</h3>
   <p>If you see mistakes or want to suggest changes, please submit a pull request on <a href="{{{distill.github}}}">github</a>.
@@ -311,7 +311,9 @@ In the meantime, we've provided an easy to use solution that improves the qualit
     <li><a href="https://arxiv.org/pdf/1606.00704.pdf">Dumoulin, V., Belghazi, I., Poole, B., Lamb, A., Arjovsky, M., Mastropietro, O. and Courville, A., 2016. <b>Adversarially Learned Inference</b>. arXiv preprint arXiv:1606.00704.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.07285.pdf">Dumoulin, V. and Visin, F., 2016. <b>A guide to convolution arithmetic for deep learning</b>. arXiv preprint arXiv:1603.07285.</a></li>
     <li><a href="https://arxiv.org/pdf/1605.09782.pdf">Donahue, J., Krähenbühl, P. and Darrell, T., 2016. <b>Adversarial Feature Learning</b>. arXiv preprint arXiv:1605.09782.</a></li>
+    <li><a href="https://arxiv.org/pdf/1511.06394.pdf">Hénaff, O. J., & Simoncelli, E. P. (2015). <b>Geodesics of learned representations.</b> arXiv preprint arXiv:1511.06394.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.08155.pdf">Johnson, J., Alahi, A. and Fei-Fei, L., 2016. <b>Perceptual losses for real-time style transfer and super-resolution</b>. arXiv preprint arXiv:1603.08155.</a></li>
+    <li><a href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html"> Mordvintsev, A., Olah, C., & Tyka, M. (2015). <b>Inceptionism: Going deeper into neural networks.</b> Google Research Blog.</a></li>
     <li><a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb"> Mordvintsev, A., 2016. <b>DeepDreaming with TensorFlow</b>. Github.</a></li>
     <li><a href="https://arxiv.org/pdf/1511.06434.pdf">Radford, A., Metz, L. and Chintala, S., 2015. <b>Unsupervised representation learning with deep convolutional generative adversarial networks</b>. arXiv preprint arXiv:1511.06434.</a></li>
     <li><a href="https://arxiv.org/pdf/1606.03498.pdf">Salimans, T., Goodfellow, I., Zaremba, W., Cheung, V., Radford, A. and Chen, X., 2016. <b>Improved techniques for training GANs</b>. arXiv preprint arXiv:1606.03498.</a></li>
