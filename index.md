@@ -89,7 +89,7 @@ is evenly balanced.
 </figure>
 
 This is a tricky balancing act to achieve, especially when one has multiple channels interacting.
-Avoiding them significantly restricts the possible filters, sacrificing model capacity.
+Avoiding artifacts significantly restricts the possible filters, sacrificing model capacity.
 In practice, neural networks struggle to learn to completely avoid these patterns.
 
 In fact, not only do models with uneven overlap not learn to avoid this,
