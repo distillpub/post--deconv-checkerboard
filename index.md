@@ -31,7 +31,7 @@ in the small image to "paint" a square in the larger one.
 We use the name "deconvolution" in this article for brevity.
 For excellent discussion of deconvolution, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf) and [Shi, et al., 2016a](https://arxiv.org/pdf/1609.07009.pdf).)
 
-Unfortunately, deconvolution can easily have uneven overlap,
+Unfortunately, deconvolution can easily have "uneven overlap,"
 putting more of the metaphorical paint in some places than others.
 In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
 While the network could, in principle, carefully learn weights to avoid this
@@ -188,7 +188,7 @@ Things Luke Vilnis suggested we look into:
 Whenever we compute the gradients of a convolutional layer,
 we do deconvolution (transposed convolution) on the backward pass.
 This can cause checkerboard patterns in the gradient,
-just as we do when we use deconvolution to generate images.
+just like when we use deconvolution to generate images.
 
 The presence of high-frequency "noise" in image model gradients is
 already known in the feature visualization community, where it's a major challenge.
