@@ -315,7 +315,7 @@ In the meantime, we've provided an easy to use solution that improves the qualit
     <li><a href="https://arxiv.org/pdf/1511.06434.pdf">Radford, A., Metz, L. and Chintala, S., 2015. <b>Unsupervised representation learning with deep convolutional generative adversarial networks</b>. arXiv preprint arXiv:1511.06434.</a></li>
     <li><a href="https://arxiv.org/pdf/1606.03498.pdf">Salimans, T., Goodfellow, I., Zaremba, W., Cheung, V., Radford, A. and Chen, X., 2016. <b>Improved techniques for training GANs</b>. arXiv preprint arXiv:1606.03498.</a></li>
     <li><a href="https://arxiv.org/pdf/1609.07009.pdf">Shi, W., Caballero, J., Theis, L., Huszar, F., Aitken, A., Ledig, C. and Wang, Z., 2016. <b>Is the deconvolution layer the same as a convolutional layer?</b>. arXiv preprint arXiv:1609.07009.</a></li>
-    <li><a href="https://arxiv.org/pdf/1609.05158.pdf">Shi, W., Caballero, J., Huszár, F., Totz, J., Aitken, A.P., Bishop, R., Rueckert, D. and Wang, Z., 2016. <b>Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network.</b> In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 1874-1883).a></li>
+    <li><a href="https://arxiv.org/pdf/1609.05158.pdf">Shi, W., Caballero, J., Huszár, F., Totz, J., Aitken, A.P., Bishop, R., Rueckert, D. and Wang, Z., 2016. <b>Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network.</b> In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 1874-1883).</a></li>
   </ul>
 
 </section>
