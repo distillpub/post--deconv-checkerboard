@@ -83,13 +83,23 @@ kind of simplistic. For better or worse, our models learn weights for their deco
 
 In theory, they could learn to carefully write to unevenly overlapping squares so that the output
 is evenly balanced.
-In practice, however, neural networks struggle to learn to not create these patterns.
-If you want to avoid creating artifacts, you need to sacrifice capacity which
-could be used for something else.
+
+<figure class="w-page">
+<img src="assets/upsample_LearnedConvUneven.svg">
+</figure>
+
+In practice, however, neural networks struggle to learn to completely avoid these patterns.
 
 In fact, not only do models with uneven overlap not learn to avoid this,
 but models with even overlap often learn kernels that cause similar artifacts!
-The artifacts seem milder, and have a different pattern, but they're present.
+While it isn't their default behavior the way it is for uneven overlap,
+even overlap deconvolution can very easily cause artifacts.
+
+<figure class="w-page">
+<img src="assets/upsample_LearnedConvEven.svg">
+</figure>
+
+In practice, the artifacts seem milder, and have a different pattern, but they're present.
 (See [Dumoulin, et al., 2016](https://arxiv.org/pdf/1606.00704v1.pdf),
 which uses stride 2 size 4 deconvolutions, as an example.)
 
