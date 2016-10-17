@@ -283,7 +283,7 @@ In the meantime, we've provided an easy to use solution that improves the qualit
   and to Mike Tyka who originally pointed out the connection between jitter and artifacts in DeepDream to us.
   </p>
 
-  <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
+  <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, Alex Mordvintsev, and Ben Poole for their feedback and encouragement.</p>
 
   <p>This work was made possible by the support of the <a href="https://research.google.com/teams/brain/">Google Brain</a> team. Augustus Odena's work was done as part of the <a href="https://research.google.com/teams/brain/residency/">Google Brain Residency Program</a>. Vincent Dumoulin did this while visiting the Brain Team as an intern.</p>
 
