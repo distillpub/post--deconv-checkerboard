@@ -32,7 +32,7 @@ We use the name "deconvolution" in this article for brevity.
 For excellent discussion of deconvolution, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf) and [Shi, et al., 2016a](https://arxiv.org/pdf/1609.07009.pdf).)
 
 Unfortunately, deconvolution can easily have "uneven overlap,"
-putting more of the metaphorical paint in some places than others.
+putting more of the metaphorical paint in some places than others ([Gauthier, 2015](http://www.foldl.me/uploads/papers/tr-cgans.pdf#page=6)).
 In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
 While the network could, in principle, carefully learn weights to avoid this
 -- as we'll discuss in more detail later --
@@ -308,6 +308,7 @@ In the meantime, we've provided an easy to use solution that improves the qualit
     <li><a href="https://arxiv.org/pdf/1606.00704.pdf">Dumoulin, V., Belghazi, I., Poole, B., Lamb, A., Arjovsky, M., Mastropietro, O. and Courville, A., 2016. <b>Adversarially Learned Inference</b>. arXiv preprint arXiv:1606.00704.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.07285.pdf">Dumoulin, V. and Visin, F., 2016. <b>A guide to convolution arithmetic for deep learning</b>. arXiv preprint arXiv:1603.07285.</a></li>
     <li><a href="https://arxiv.org/pdf/1605.09782.pdf">Donahue, J., Krähenbühl, P. and Darrell, T., 2016. <b>Adversarial Feature Learning</b>. arXiv preprint arXiv:1605.09782.</a></li>
+    <li><a href="http://www.foldl.me/uploads/papers/tr-cgans.pdf">Gauthier, J., 2015. <b>Conditional generative adversarial networks for convolutional face generation</b>. Technical report.</a></li>
     <li><a href="https://arxiv.org/pdf/1511.06394.pdf">Hénaff, O. J., & Simoncelli, E. P. (2015). <b>Geodesics of learned representations.</b> arXiv preprint arXiv:1511.06394.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.08155.pdf">Johnson, J., Alahi, A. and Fei-Fei, L., 2016. <b>Perceptual losses for real-time style transfer and super-resolution</b>. arXiv preprint arXiv:1603.08155.</a></li>
     <li><a href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html"> Mordvintsev, A., Olah, C., & Tyka, M. (2015). <b>Inceptionism: Going deeper into neural networks.</b> Google Research Blog.</a></li>
