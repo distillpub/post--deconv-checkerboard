@@ -109,7 +109,7 @@ which uses stride 2 size 4 deconvolutions, as an example.)
 There are probably a lot of factors at play here.
 One issue, in the case of GANs, may be with the discriminator and its gradients, which we'll discuss more later.
 But a big part of the problem seems to be deconvolution.
-At best, deconvolution is fragile because it is very easily represents artifact creating functions, even when the size is carefully chosen.
+At best, deconvolution is fragile because it very easily represents artifact creating functions, even when the size is carefully chosen.
 At worst, creating artifacts is the default behavior of deconvolution.
 
 Is there a different way to upsample that is more resistant to artifacts?
