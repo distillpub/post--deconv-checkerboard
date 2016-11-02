@@ -107,7 +107,8 @@ and in practice the artifacts are still present in these models, although they s
 which uses stride 2 size 4 deconvolutions, as an example.)
 
 There are probably a lot of factors at play here.
-One issue, in the case of GANs, may be with the discriminator and its gradients, which we'll discuss more later.
+For example, in the case of Generative Adversarial Networks (GANs), one issue may be the discriminator and its gradients
+(we'll discuss this more later).
 But a big part of the problem seems to be deconvolution.
 At best, deconvolution is fragile because it very easily represents artifact creating functions, even when the size is carefully chosen.
 At worst, creating artifacts is the default behavior of deconvolution.
