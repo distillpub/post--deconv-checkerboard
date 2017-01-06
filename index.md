@@ -31,8 +31,8 @@ in the small image to "paint" a square in the larger one.
 We use the name "deconvolution" in this article for brevity.
 For excellent discussion of deconvolution, see [Dumoulin & Visin, 2016](https://arxiv.org/pdf/1603.07285v1.pdf) and [Shi, et al., 2016a](https://arxiv.org/pdf/1609.07009.pdf).)
 
-Unfortunately, deconvolution can easily have uneven overlap,
-putting more of the metaphorical paint in some places than others.
+Unfortunately, deconvolution can easily have "uneven overlap,"
+putting more of the metaphorical paint in some places than others ([Gauthier, 2015](http://www.foldl.me/uploads/papers/tr-cgans.pdf#page=6)).
 In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
 While the network could, in principle, carefully learn weights to avoid this
 -- as we'll discuss in more detail later --
@@ -89,7 +89,7 @@ is evenly balanced.
 </figure>
 
 This is a tricky balancing act to achieve, especially when one has multiple channels interacting.
-Avoiding them significantly restricts the possible filters, sacrificing model capacity.
+Avoiding artifacts significantly restricts the possible filters, sacrificing model capacity.
 In practice, neural networks struggle to learn to completely avoid these patterns.
 
 In fact, not only do models with uneven overlap not learn to avoid this,
@@ -107,9 +107,10 @@ and in practice the artifacts are still present in these models, although they s
 which uses stride 2 size 4 deconvolutions, as an example.)
 
 There are probably a lot of factors at play here.
-One issue, in the case of GANs, may be with the discriminator and its gradients, which we'll discuss more later.
+For example, in the case of Generative Adversarial Networks (GANs), one issue may be the discriminator and its gradients
+(we'll discuss this more later).
 But a big part of the problem seems to be deconvolution.
-At best, deconvolution is fragile because it is very easily represents artifact creating functions, even when the size is carefully chosen.
+At best, deconvolution is fragile because it very easily represents artifact creating functions, even when the size is carefully chosen.
 At worst, creating artifacts is the default behavior of deconvolution.
 
 Is there a different way to upsample that is more resistant to artifacts?
@@ -145,6 +146,10 @@ This may simply mean that, for our models, the nearest-neighbor happened to work
 It might also point at trickier issues with naively using bilinear interpolation, where it resists high-frequency image features too strongly.
 We don't necessarily think that either approach is the final solution to upsampling, but they do fix the checkerboard artifacts.
 
+### Code
+
+Resize-convolution layers can be easily implemented in TensorFlow using [`tf.image.resize_images()`](https://www.tensorflow.org/versions/r0.11/api_docs/python/image.html#resize_images). For best results, use [`tf.pad()`](https://www.tensorflow.org/versions/r0.11/api_docs/python/array_ops.html#pad) before doing convolution with [`tf.nn.conv2d()`](https://www.tensorflow.org/versions/r0.11/api_docs/python/nn.html#conv2d) to avoid boundary artifacts.
+
 ----
 ## Image Generation Results
 
@@ -175,20 +180,13 @@ in more thorough experiments and state-of-the-art results.
 (We've chosen to present this technique separately because we felt it merited more detailed discussion, and because it cut across multiple papers.)
 
 
-<!--
-Things Luke Vilnis suggested we look into:
-* should we be calling it deconv?
-* this paper argues for a different but related architecture http://128.84.21.199/pdf/1609.07009.pdf (seems like high-res literature already does something similar to what we are doing)
--->
-
-
 -----
 ## Artifacts in Gradients
 
 Whenever we compute the gradients of a convolutional layer,
 we do deconvolution (transposed convolution) on the backward pass.
 This can cause checkerboard patterns in the gradient,
-just as we do when we use deconvolution to generate images.
+just like when we use deconvolution to generate images.
 
 The presence of high-frequency "noise" in image model gradients is
 already known in the feature visualization community, where it's a major challenge.
@@ -283,7 +281,7 @@ In the meantime, we've provided an easy to use solution that improves the qualit
   and to Mike Tyka who originally pointed out the connection between jitter and artifacts in DeepDream to us.
   </p>
 
-  <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, and Ben Poole for their feedback and encouragement.</p>
+  <p>Thank you also to Luke Vilnis, Jon Shlens, Luke Metz, Alex Mordvintsev, and Ben Poole for their feedback and encouragement.</p>
 
   <p>This work was made possible by the support of the <a href="https://research.google.com/teams/brain/">Google Brain</a> team. Augustus Odena's work was done as part of the <a href="https://research.google.com/teams/brain/residency/">Google Brain Residency Program</a>. Vincent Dumoulin did this while visiting the Brain Team as an intern.</p>
 
@@ -311,6 +309,7 @@ In the meantime, we've provided an easy to use solution that improves the qualit
     <li><a href="https://arxiv.org/pdf/1606.00704.pdf">Dumoulin, V., Belghazi, I., Poole, B., Lamb, A., Arjovsky, M., Mastropietro, O. and Courville, A., 2016. <b>Adversarially Learned Inference</b>. arXiv preprint arXiv:1606.00704.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.07285.pdf">Dumoulin, V. and Visin, F., 2016. <b>A guide to convolution arithmetic for deep learning</b>. arXiv preprint arXiv:1603.07285.</a></li>
     <li><a href="https://arxiv.org/pdf/1605.09782.pdf">Donahue, J., Krähenbühl, P. and Darrell, T., 2016. <b>Adversarial Feature Learning</b>. arXiv preprint arXiv:1605.09782.</a></li>
+    <li><a href="http://www.foldl.me/uploads/papers/tr-cgans.pdf">Gauthier, J., 2015. <b>Conditional generative adversarial networks for convolutional face generation</b>. Technical report.</a></li>
     <li><a href="https://arxiv.org/pdf/1511.06394.pdf">Hénaff, O. J., & Simoncelli, E. P. (2015). <b>Geodesics of learned representations.</b> arXiv preprint arXiv:1511.06394.</a></li>
     <li><a href="https://arxiv.org/pdf/1603.08155.pdf">Johnson, J., Alahi, A. and Fei-Fei, L., 2016. <b>Perceptual losses for real-time style transfer and super-resolution</b>. arXiv preprint arXiv:1603.08155.</a></li>
     <li><a href="https://research.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html"> Mordvintsev, A., Olah, C., & Tyka, M. (2015). <b>Inceptionism: Going deeper into neural networks.</b> Google Research Blog.</a></li>
@@ -318,7 +317,7 @@ In the meantime, we've provided an easy to use solution that improves the qualit
     <li><a href="https://arxiv.org/pdf/1511.06434.pdf">Radford, A., Metz, L. and Chintala, S., 2015. <b>Unsupervised representation learning with deep convolutional generative adversarial networks</b>. arXiv preprint arXiv:1511.06434.</a></li>
     <li><a href="https://arxiv.org/pdf/1606.03498.pdf">Salimans, T., Goodfellow, I., Zaremba, W., Cheung, V., Radford, A. and Chen, X., 2016. <b>Improved techniques for training GANs</b>. arXiv preprint arXiv:1606.03498.</a></li>
     <li><a href="https://arxiv.org/pdf/1609.07009.pdf">Shi, W., Caballero, J., Theis, L., Huszar, F., Aitken, A., Ledig, C. and Wang, Z., 2016. <b>Is the deconvolution layer the same as a convolutional layer?</b>. arXiv preprint arXiv:1609.07009.</a></li>
-    <li><a href="https://arxiv.org/pdf/1609.05158.pdf">Shi, W., Caballero, J., Huszár, F., Totz, J., Aitken, A.P., Bishop, R., Rueckert, D. and Wang, Z., 2016. <b>Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network.</b> In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 1874-1883).a></li>
+    <li><a href="https://arxiv.org/pdf/1609.05158.pdf">Shi, W., Caballero, J., Huszár, F., Totz, J., Aitken, A.P., Bishop, R., Rueckert, D. and Wang, Z., 2016. <b>Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network.</b> In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 1874-1883).</a></li>
   </ul>
 
 </section>
