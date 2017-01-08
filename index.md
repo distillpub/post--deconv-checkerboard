@@ -59,10 +59,10 @@ they often compound, creating artifacts on a variety of scales.
 {{> assets/deconv1d_multi.html}}
 
 Stride 1 deconvolutions --
-which we often see as the last layer in successful models (eg. <a href="https://arxiv.org/pdf/1606.03498v1.pdf">Salimans et al., 2016</a>)
+which we often see as the last layer in successful models (e.g. <a href="https://arxiv.org/pdf/1606.03498v1.pdf">Salimans et al., 2016</a>)
 -- are quite effective at dampening artifacts.
  They can remove artifacts of frequencies
-that divide their size, and reduce others artifacts of frequency less than their
+that divide their size, and reduce other artifacts of frequency less than their
 size. However, artifacts can still leak through, as seen in many recent models.
 
 In addition to the high frequency checkerboard-like artifacts we observed above,
@@ -131,7 +131,7 @@ However, while this approach helps, it is still easy for deconvolution to fall i
 
 Another approach is to separate out upsampling to a higher resolution from convolution to compute features.
 For example, you might resize the image (using [nearest-neighbor interpolation](https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation) or [bilinear interpolation](https://en.wikipedia.org/wiki/Bilinear_interpolation)) and then do a convolutional layer.
-This seems like a natural approach, and roughly similar methods have worked well in image super-resolution (eg. [Dong, et al., 2015](https://arxiv.org/pdf/1501.00092v3.pdf)).
+This seems like a natural approach, and roughly similar methods have worked well in image super-resolution (e.g. [Dong, et al., 2015](https://arxiv.org/pdf/1501.00092v3.pdf)).
 
 <figure class="w-page">
 <img src="assets/upsample_DeconvTypes.svg">
@@ -200,7 +200,7 @@ In particular, the "jitter" of optimizing at different offsets cancels out some 
 
 {{> assets/deepdream_fix.html}}
 
-(While much some of the artifacts are our standard checkerboard pattern,
+(While some of the artifacts are our standard checkerboard pattern,
 others are a less organized high-frequency pattern.
 We believe these to be caused by max pooling.
 Max pooling was previously linked to high-frequency artifacts in [Henaff & Simoncelli, 2015](https://arxiv.org/pdf/1511.06394.pdf).)
@@ -214,7 +214,7 @@ in [Henaff & Simoncelli, 2015](https://arxiv.org/pdf/1409.1556.pdf) -- they reco
 Equivalently, the network will care much more about some pixels in the input than others, for no good reason.
 This strange property is wide spread among modern vision models, and it suggests a number of questions.-->
 
-More recent work in feature visualization (eg. [Mordvintsev, 2016](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb)),
+More recent work in feature visualization (e.g. [Mordvintsev, 2016](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/deepdream/deepdream.ipynb)),
 has explicitly recognized and compensated for these high-frequency gradient components.
 One wonders if better neural network architectures could make these efforts unnecessary.
 
@@ -233,7 +233,7 @@ One way to think about them is that some neurons will get many times the gradien
 Equivalently, the network will care much more about some pixels in the input than others, for no good reason.
 Neither of those sounds ideal.
 
-It seems possible that having some pixels affect the network output much more than others may exaggerate adversarial counter-examples.
+It seems possible that having some pixels affect the network output much more than others may exaggerate adversarial counterexamples.
 Because the derivative is concentrated on small number of pixels,
 small perturbations of those pixels may have outsized effects.
 We have not investigated this.
@@ -248,7 +248,7 @@ but could a bias in the discriminators makes it hard for them to catch these art
 If some neurons get many times the gradient of others, does that present a challenge for training?
 Is it an argument for optimizers like ADAM, which are invariant to the scale of the gradient different neurons get?
 
-* **Adversarial Counter-Examples**:
+* **Adversarial Counterexamples**:
 Does having some pixels affect the network output much more than others exaggerate adversarial counter-examples?
 Because the derivative is concentrated on small number of pixels,
 small perturbations of those pixels may have outsized effects.
@@ -289,8 +289,8 @@ In the meantime, we've provided an easy to use solution that improves the qualit
   <p>Augustus and Chris recognized the connection between deconvolution and artifacts. Augustus ran the GAN experiments. Vincent ran the artistic style transfer experiments. Chris ran the DeepDream experiments, created the visualizations and wrote most of the article.</p>
 
   <h3 id="citation">Errors, Reuse, and Citation</h3>
-  <p>If you see mistakes or want to suggest changes, please submit a pull request on <a href="{{{distill.github}}}">github</a>.
-  <p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY 2.0</a>, unless noted otherwise, with the source available on available on <a href="{{{distill.github}}}">github</a>. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from …".
+  <p>If you see mistakes or want to suggest changes, please submit a pull request on <a href="{{{distill.github}}}">GitHub</a>.
+  <p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/2.0/">CC-BY 2.0</a>, unless noted otherwise, with the source available on available on <a href="{{{distill.github}}}">GitHub</a>. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from …".
   <p>For attribution in academic contexts, please cite this work as
   <pre class="citation">Augustus Odena, Vincent Dumoulin, & Chris Olah. "{{distill.title}}", Distill, {{distill.firstPublishedYear}}.</pre>
   <p>BibTeX citation
