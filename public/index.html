@@ -54,7 +54,7 @@
   For excellent discussion of deconvolution, see <dt-cite key="dumoulin2016guide,shi2016deconvolution"></dt-cite>.)
 
   Unfortunately, deconvolution can easily have "uneven overlap,"
-  putting more of the metaphorical paint in some places than others (<dt-cite key="gauthier2014conditional"></dt-cite>).
+  putting more of the metaphorical paint in some places than others <dt-cite key="gauthier2014conditional"></dt-cite>.
   In particular, deconvolution has uneven overlap when the kernel size (the output window size) is not divisible by the stride (the spacing between points on the top).
   While the network could, in principle, carefully learn weights to avoid this
   -- as we'll discuss in more detail later --
@@ -147,7 +147,7 @@
   One approach is to make sure you use a kernel size that is divided by your stride,
   avoiding the overlap issue.
   This is equivalent to "sub-pixel convolution," a technique which has recently
-  had success in image super-resolution (<dt-cite key="shi2016real"></dt-cite>).
+  had success in image super-resolution <dt-cite key="shi2016real"></dt-cite>.
   However, while this approach helps, it is still easy for deconvolution to fall into creating artifacts.
 
 
@@ -191,7 +191,7 @@
   (It also suggests that we might be able to learn a lot about good generator design without the slow feedback cycle of training models.)
 
   Another reason to believe these artifacts aren't GAN specific is that we see them in other kinds of models, and have found that they also go away when we switch to resize-convolution upsampling.
-  For example, consider real-time artistic style transfer (<dt-cite key="johnson2016perceptual"></dt-cite>) where a neural net is trained to directly generate style-transferred images.
+  For example, consider real-time artistic style transfer <dt-cite key="johnson2016perceptual"></dt-cite> where a neural net is trained to directly generate style-transferred images.
   We've found these to be vulnerable to checkerboard artifacts (especially when the cost doesn't explicitly resist them).
   However, switching deconvolutional layers for resize-convolution layers makes the artifacts disappear.
 
@@ -214,7 +214,7 @@
   already known in the feature visualization community, where it's a major challenge.
   Somehow, feature visualization methods must compensate for this noise.
 
-  For example, DeepDream (<dt-cite key="mordvintsev2015inceptionism"></dt-cite>)
+  For example, DeepDream <dt-cite key="mordvintsev2015inceptionism"></dt-cite>
   seems to cause destructive interference between artifacts in a number of ways,
   such as optimizing many features simultaneously, and optimizing at many offsets and scales.
   In particular, the "jitter" of optimizing at different offsets cancels out some of the checkerboard artifacts.
