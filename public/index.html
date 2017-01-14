@@ -612,7 +612,7 @@ deconv1d_multi();
   (It also suggests that we might be able to learn a lot about good generator design without the slow feedback cycle of training models.)</p>
 
   <p>Another reason to believe these artifacts aren't GAN specific is that we see them in other kinds of models, and have found that they also go away when we switch to resize-convolution upsampling.
-  For example, consider real-time artistic style transfer <dt-cite key="johnson2016perceptual"></dt-cite> where a neural net is trained to directly generate style-transferred images.
+  For example, consider <dt-cite key="johnson2016perceptual">real-time artistic style transfer</dt-cite> where a neural net is trained to directly generate style-transferred images.
   We've found these to be vulnerable to checkerboard artifacts (especially when the cost doesn't explicitly resist them).
   However, switching deconvolutional layers for resize-convolution layers makes the artifacts disappear.</p>
 
